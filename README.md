@@ -1,127 +1,66 @@
-# Digital Ownership Framework
+## Foundry
 
-## Project Overview
+**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
 
-The Digital Ownership Framework is a decentralized system built on blockchain technology that enables individuals to create, manage, and validate their own ownership tokens without relying on centralized authorities.
+Foundry consists of:
 
-Instead of traditional identity or ownership systems, this framework uses community-driven endorsements to establish trust, forming a decentralized and transparent trust network.
+- **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
+- **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
+- **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
+- **Chisel**: Fast, utilitarian, and verbose solidity REPL.
 
----
+## Documentation
 
-## Problem Statement
+https://book.getfoundry.sh/
 
-Current ownership and identity systems are centralized, which introduces several challenges:
+## Usage
 
-* Lack of user control over personal data
-* Limited interoperability and global portability
-* Dependency on authorities for validation
-* Increased risk of misuse and data breaches
+### Build
 
----
+```shell
+$ forge build
+```
 
-## Proposed Solution
+### Test
 
-This framework introduces a self-sovereign model where:
+```shell
+$ forge test
+```
 
-* Users mint ERC-721 based ownership tokens
-* Metadata can be customized and updated
-* Community members provide endorsements
-* Trust is built through a network rather than a central authority
+### Format
 
----
+```shell
+$ forge fmt
+```
 
-## Key Features
+### Gas Snapshots
 
-* Self-sovereign ownership control
-* Community-driven trust validation
-* Flexible metadata storage
-* Endorsement and revocation mechanisms
-* Security and recovery support
+```shell
+$ forge snapshot
+```
 
----
+### Anvil
 
-## System Architecture
+```shell
+$ anvil
+```
 
-The system is divided into multiple layers:
+### Deploy
 
-### 1. User Interaction Layer
+```shell
+$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
+```
 
-Provides a web interface for users to interact with the system.
+### Cast
 
-### 2. Smart Contract Layer
+```shell
+$ cast <subcommand>
+```
 
-Handles:
+### Help
 
-* Token minting (ERC-721)
-* Metadata management
-* Endorsements
-* Recovery mechanisms
-
-### 3. Storage Layer
-
-* On-chain storage for critical data
-* Decentralized storage for large assets
-
-### 4. Trust Processing Layer
-
-* Off-chain computation of reputation scores
-* Graph-based endorsement analysis
-
----
-
-## Technical Design and Implementation
-
-### Smart Contracts
-
-* Each user owns a unique ownership token
-* Tokens are linked to wallet addresses
-* Supports endorsement and revocation
-
-### Storage
-
-* Hybrid storage approach for efficiency and verifiability
-
-### Frontend
-
-* Web-based interface
-* Wallet integration for authentication
-* Easy management of tokens and endorsements
-
-### Trust Engine
-
-* Off-chain processing for scalability
-* Uses graph-based models for trust evaluation
-
----
-
-## Security Features
-
-* Backup wallet support
-* Compromised account flagging
-* Recovery mechanisms for ownership restoration
-
----
-
-## Impact
-
-This project enables:
-
-* Decentralized and user-controlled ownership
-* Increased transparency and trust
-* Reduced reliance on centralized authorities
-* Scalable identity and ownership solutions for Web3 ecosystems
-
----
-
-## Future Scope
-
-* Integration with decentralized identity standards
-* Advanced trust scoring algorithms
-* Cross-platform interoperability
-* Enhanced privacy mechanisms
-
----
-
-## License
-
-This project is open-source and available under the MIT Lice
+```shell
+$ forge --help
+$ anvil --help
+$ cast --help
+```
