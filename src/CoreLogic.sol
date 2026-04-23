@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
-import "./AccessController.sol";
+import "./AccessControl.sol";
 
 contract CoreLogic is AccessController {
 
@@ -13,7 +13,7 @@ contract CoreLogic is AccessController {
         AccessController(registryAddress) 
     {}
 
-    function setData(uint256 id, string memory value) 
+    function setData(uint256 id, string calldata value) 
         external 
         onlyVerifiedUser 
     {
