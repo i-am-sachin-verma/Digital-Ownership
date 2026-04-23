@@ -17,13 +17,17 @@ contract CoreLogic is AccessController {
         external 
         onlyVerifiedUser 
     {
-        require(bytes(value).length > 0, "Empty value");
+        require(id > 0, "ID must be greater than zero");
+        require(bytes(value).length > 0, "Value cannot be empty");
 
         data[id] = value;
         emit DataUpdated(id, value);
     }
 
     function getData(uint256 id) external view returns (string memory) {
-        return data[id];
+        require(id > 0, "ID must be greater than zero");
+        string memory value = data[id];
+        require(bytes(value).length > 0, "Data not found for this ID");
+        return value;
     }
 }
