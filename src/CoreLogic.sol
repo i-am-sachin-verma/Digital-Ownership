@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
-import "./AccessController.sol";
+import "./AccessControl.sol";
 
 contract CoreLogic is AccessController {
 
