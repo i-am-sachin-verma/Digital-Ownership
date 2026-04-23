@@ -3,8 +3,12 @@ pragma solidity ^0.8.20;
 
 contract SovereignIdentityRegistry {
 
-    mapping(address => bytes32) private identityHash;
-    mapping(address => bool) private registered;
+    struct Identity {
+        bytes32 hash;
+        bool registered;
+    }
+
+    mapping(address => Identity) private identities;
 
     event IdentityRegistered(address indexed user, bytes32 identityHash);
 
@@ -13,29 +17,32 @@ contract SovereignIdentityRegistry {
     error NotRegistered();
 
     function registerIdentity(bytes32 _identityHash) external {
-        require(!registered[msg.sender], "User already registered");
         require(_identityHash != bytes32(0), "Invalid identity hash");
+        
+        Identity storage identity = identities[msg.sender];
+        require(!identity.registered, "User already registered");
 
-        identityHash[msg.sender] = _identityHash;
-        registered[msg.sender] = true;
+        identity.hash = _identityHash;
+        identity.registered = true;
 
         emit IdentityRegistered(msg.sender, _identityHash);
     }
 
     function isRegistered(address user) external view returns (bool) {
         require(user != address(0), "Invalid user address");
-        return registered[user];
+        return identities[user].registered;
     }
 
     function getIdentityHash(address user) external view returns (bytes32) {
         require(user != address(0), "Invalid user address");
-        require(registered[user], "User not registered");
-        return identityHash[user];
+        Identity storage identity = identities[user];
+        require(identity.registered, "User not registered");
+        return identity.hash;
     }
 
     function verifyIdentity(address user, bytes32 _hash) external view returns (bool) {
         require(user != address(0), "Invalid user address");
         require(_hash != bytes32(0), "Invalid hash to verify");
-        return identityHash[user] == _hash;
+        return identities[user].hash == _hash;
     }
 }
