@@ -39,8 +39,8 @@ contract Bank {
     }
 
     function withdraw(uint256 amount) public {
-        require(amount > 0, "Zero amount");
-        require(balances[msg.sender] >= amount, "Low balance");
+        require(amount > 0, "Zero withdrawal");
+        require(balances[msg.sender] >= amount, "Insufficient balance");
 
         balances[msg.sender] -= amount;
         totalBankBalance -= amount;
@@ -48,33 +48,6 @@ contract Bank {
         payable(msg.sender).transfer(amount);
 
         emit Withdrawn(msg.sender, amount);
-    }
-
-    function myBalance() public view returns (uint256) {
-        return balances[msg.sender];
-    }
-
-    function userCount() public view returns (uint256) {
-        return users.length;
-    }
-
-    function getUser(uint256 index) public view returns (address) {
-        return users[index];
-    }
-
-    function transferOwnership(address newOwner) public onlyOwner {
-        require(newOwner != address(0), "Zero address");
-
-        address old = owner;
-        owner = newOwner;
-
-        emit OwnershipTransferred(old, newOwner);
-    }
-
-    function emergencyWithdrawAll() public onlyOwner {
-        uint256 amount = address(this).balance;
-        totalBankBalance = 0;
-        payable(owner).transfer(amount);
     }
 
     receive() external payable {
