@@ -105,25 +105,6 @@ contract SimpleStorage {
         return people.length;
     }
 
-    // Pause contract
-    function pause() public onlyOwner {
-        paused = true;
-        emit PauseChanged(true);
-    }
-
-    // Unpause contract
-    function unpause() public onlyOwner {
-        paused = false;
-        emit PauseChanged(false);
-    }
-
-    // Change owner name
-    function updateOwnerName(
-        string memory _newName
-    ) public onlyOwner {
-        ownerName = _newName;
-    }
-
     // Check if caller has saved number
     function myNumber() public view returns (uint256) {
         return userNumbers[msg.sender];
