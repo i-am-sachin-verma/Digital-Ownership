@@ -10,10 +10,12 @@ contract AccessController {
 
     mapping(address => bool) private admins;
     mapping(address => bool) private suspendedAdmins;
+    uint256 public adminCount;
 
     event AdminAdded(address indexed user);
     event AdminSuspended(address indexed user);
     event AdminReinstated(address indexed user);
+    event AdminRemoved(address indexed user);
 
     constructor(address registryAddress, address _securityCouncil) {
         require(registryAddress != address(0), "Invalid registry address");
@@ -22,6 +24,7 @@ contract AccessController {
         identityRegistry = SovereignIdentityRegistry(registryAddress);
         securityCouncil = _securityCouncil;
         admins[msg.sender] = true;
+        adminCount = 1;
     }
 
     modifier onlyAdmin() {
@@ -55,7 +58,18 @@ contract AccessController {
         require(user != address(0), "Invalid user address");
         require(!admins[user], "Already an admin");
         admins[user] = true;
+        adminCount++;
         emit AdminAdded(user);
+    }
+
+    function removeAdmin(address user) external onlyAdmin {
+        require(admins[user], "Not an admin");
+        require(user != msg.sender, "Cannot remove self");
+        require(adminCount > 1, "Must have at least one admin");
+
+        admins[user] = false;
+        adminCount--;
+        emit AdminRemoved(user);
     }
 
     function isAdmin(address user) external view returns (bool) {
