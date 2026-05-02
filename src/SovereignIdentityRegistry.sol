@@ -17,11 +17,10 @@ contract SovereignIdentityRegistry {
     error NotRegistered();
 
     function registerIdentity(bytes32 _identityHash) external {
-        require(_identityHash != bytes32(0), "Invalid identity hash");
-        
         Identity storage identity = identities[msg.sender];
         require(!identity.registered, "User already registered");
-
+        require(_identityHash != bytes32(0), "Invalid identity hash");
+        
         identity.hash = _identityHash;
         identity.registered = true;
 
