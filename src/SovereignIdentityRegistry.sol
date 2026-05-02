@@ -27,8 +27,16 @@ contract SovereignIdentityRegistry {
         emit IdentityRegistered(msg.sender, _identityHash);
     }
 
-    function isRegistered(address user) external view returns (bool) {
-        require(user != address(0), "Invalid user address");
+    function isRegistered(address user) external view returns (bool registered) {
+        assembly {
+            if iszero(user) {
+                mstore(0x00, 0x08c379a0)
+                mstore(0x04, 0x20)
+                mstore(0x24, 20)
+                mstore(0x44, "Invalid user address")
+                revert(0x00, 0x64)
+            }
+        }
         return identities[user].registered;
     }
 
