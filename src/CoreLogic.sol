@@ -7,7 +7,7 @@ contract CoreLogic is AccessController {
 
     mapping(uint256 => string) private data;
 
-    event DataUpdated(uint256 indexed id, string value);
+    event DataUpdated(uint256 indexed id, string indexed value);
 
     constructor(address registryAddress, address securityCouncil) 
         AccessController(registryAddress, securityCouncil) 
