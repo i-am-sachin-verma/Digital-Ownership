@@ -5,7 +5,7 @@ import "./SovereignIdentityRegistry.sol";
 
 contract AccessController {
 
-    SovereignIdentityRegistry public identityRegistry;
+    SovereignIdentityRegistry public immutable identityRegistry;
     address public securityCouncil;
 
     mapping(address => bool) private admins;
