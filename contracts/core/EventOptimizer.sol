@@ -7,22 +7,13 @@ contract EventOptimizer {
     uint256 public totalDeposits;
     uint256 public totalWithdrawals;
 
+    /// @title A title that should describe the contract/interface
+    /// @author The name of the author
+    /// @notice Explain to an end user what this does
+    /// @dev Explain to a developer any extra details
+
     mapping(address => uint256) public balances;
     mapping(address => bool) public whitelist;
-
-    /*
-        Optimized Event Strategy
-
-        Instead of:
-        - emitting on every internal state change
-        - many tiny duplicate logs
-        - unnecessary verbose data
-
-        Use:
-        - only external user-facing actions
-        - indexed searchable fields
-        - compact parameters
-    */
 
     // Essential user action logs
     event Deposit(address indexed user, uint256 amount);
@@ -54,13 +45,8 @@ contract EventOptimizer {
     }
 
     /*
-        Good:
-        Emit once after success
-
-        Avoid:
-        emit BeforeDeposit(...)
-        emit DepositStarted(...)
-        emit DepositDone(...)
+        Emit only essential user actions
+        Avoid logging every state change
     */
     function deposit() external payable {
         require(msg.value > 0, "Zero amount");
