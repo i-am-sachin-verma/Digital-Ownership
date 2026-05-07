@@ -540,29 +540,6 @@ contract AdvancedIdentityRegistry is ERC721, AccessControl {
         return activityLogs[tokenId].length;
     }
 
-
-
-    function tokenURI(
-        uint256 tokenId
-    )
-        public
-        view
-        override
-        returns(string memory)
-    {
-        require(
-            _exists(tokenId),
-            "Token missing"
-        );
-
-
-
-        return identities[tokenId]
-            .metadataURI;
-    }
-
-
-
     function supportsInterface(
         bytes4 interfaceId
     )
