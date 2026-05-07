@@ -169,36 +169,4 @@ contract AssemblyOptimizer {
             current := sload(owner.slot)
         }
     }
-
-    /*
-        Double a number using shift
-        x * 2 = shl(1, x)
-    */
-    function doubleFast(
-        uint256 x
-    ) external pure returns (uint256 y) {
-
-        assembly {
-            y := shl(1, x)
-        }
-    }
-
-    /*
-        Divide by 2 using shift
-    */
-    function halfFast(
-        uint256 x
-    ) external pure returns (uint256 y) {
-
-        assembly {
-            y := shr(1, x)
-        }
-    }
-
-    receive() external payable {
-        balances[msg.sender] += msg.value;
-        totalValue += msg.value;
-
-        emit Deposited(msg.sender, msg.value);
-    }
 }
