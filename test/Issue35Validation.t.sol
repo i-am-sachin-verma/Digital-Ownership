@@ -13,13 +13,14 @@ contract Issue35ValidationTest is Test {
 
     address public admin = address(0x1);
     address public user = address(0x2);
+    address public securityCouncil = address(0x3);
 
     function setUp() public {
         registry = new SovereignIdentityRegistry();
         vm.prank(admin);
-        controller = new AccessController(address(registry));
+        controller = new AccessController(address(registry), securityCouncil);
         vm.prank(admin);
-        logic = new CoreLogic(address(registry));
+        logic = new CoreLogic(address(registry), securityCouncil);
     }
 
     // --- SovereignIdentityRegistry Tests ---
@@ -44,7 +45,38 @@ contract Issue35ValidationTest is Test {
 
     function test_Controller_Fail_ZeroRegistry() public {
         vm.expectRevert("Invalid registry address");
-        new AccessController(address(0));
+        new AccessController(address(0), securityCouncil);
+    }
+
+    function test_Controller_Fail_ZeroSecurityCouncil() public {
+        vm.expectRevert("Invalid security council");
+        new AccessController(address(registry), address(0));
+    }
+
+    function test_Controller_Suspension() public {
+        // Suspend the admin
+        vm.prank(securityCouncil);
+        controller.suspendAdmin(admin);
+
+        // Admin should now fail onlyAdmin check
+        vm.prank(admin);
+        vm.expectRevert("Admin suspended");
+        controller.addAdmin(user);
+
+        // Reinstate
+        vm.prank(securityCouncil);
+        controller.reinstateAdmin(admin);
+
+        // Should work now
+        vm.prank(admin);
+        controller.addAdmin(user);
+        assertTrue(controller.isAdmin(user));
+    }
+
+    function test_Controller_Fail_UnauthorizedSuspend() public {
+        vm.prank(admin);
+        vm.expectRevert("Not security council");
+        controller.suspendAdmin(admin);
     }
 
     function test_Controller_Fail_AddZeroAdmin() public {

@@ -40,6 +40,10 @@ contract UltraOptimizedVaultSystem {
         uint256 lastUpdate;
     }
 
+    uint256 private constant _NOT_ENTERED = 1;
+    uint256 private constant _ENTERED = 2;
+    uint256 private _status;
+
     mapping(address => UserInfo) internal users;
 
     address[] internal userList;
@@ -69,6 +73,13 @@ contract UltraOptimizedVaultSystem {
         _;
     }
 
+    modifier nonReentrant() {
+        require(_status != _ENTERED, "ReentrancyGuard: reentrant call");
+        _status = _ENTERED;
+        _;
+        _status = _NOT_ENTERED;
+    }
+
     /* -------------------------------------------------------------------------- */
     /*                                CONSTRUCTOR                                 */
     /* -------------------------------------------------------------------------- */
@@ -76,6 +87,7 @@ contract UltraOptimizedVaultSystem {
     constructor(uint256 _rate) {
         owner = msg.sender;
         rewardRate = _rate;
+        _status = _NOT_ENTERED;
     }
 
     /* -------------------------------------------------------------------------- */
@@ -128,7 +140,7 @@ contract UltraOptimizedVaultSystem {
     /*                             USER FUNCTIONS                                 */
     /* -------------------------------------------------------------------------- */
 
-    function deposit() external payable {
+    function deposit() external payable nonReentrant {
 
         uint256 amount = msg.value;
         if (amount == 0) revert ZeroAmount();
@@ -146,7 +158,7 @@ contract UltraOptimizedVaultSystem {
         emit Deposit(msg.sender, amount);
     }
 
-    function withdraw(uint256 amount) external {
+    function withdraw(uint256 amount) external nonReentrant {
 
         if (amount == 0) revert ZeroAmount();
 
@@ -165,7 +177,7 @@ contract UltraOptimizedVaultSystem {
         emit Withdraw(msg.sender, amount);
     }
 
-    function claimReward() external {
+    function claimReward() external nonReentrant {
 
         _updateUser(msg.sender);
 

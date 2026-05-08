@@ -17,19 +17,26 @@ contract SovereignIdentityRegistry {
     error NotRegistered();
 
     function registerIdentity(bytes32 _identityHash) external {
-        require(_identityHash != bytes32(0), "Invalid identity hash");
-        
         Identity storage identity = identities[msg.sender];
         require(!identity.registered, "User already registered");
-
+        require(_identityHash != bytes32(0), "Invalid identity hash");
+        
         identity.hash = _identityHash;
         identity.registered = true;
 
         emit IdentityRegistered(msg.sender, _identityHash);
     }
 
-    function isRegistered(address user) external view returns (bool) {
-        require(user != address(0), "Invalid user address");
+    function isRegistered(address user) external view returns (bool registered) {
+        assembly {
+            if iszero(user) {
+                mstore(0x00, 0x08c379a0)
+                mstore(0x04, 0x20)
+                mstore(0x24, 20)
+                mstore(0x44, "Invalid user address")
+                revert(0x00, 0x64)
+            }
+        }
         return identities[user].registered;
     }
 
