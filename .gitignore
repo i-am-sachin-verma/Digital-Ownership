@@ -1,0 +1,27 @@
+# Node modules
+node_modules/
+frontend/node_modules/
+
+# Frontend full ignore (if needed)
+frontend/
+frontend/
+
+# Env
+.env
+
+# Build folders
+dist/
+build/
+.next/
+
+# Compiler files
+cache/
+out/
+
+# Broadcast logs
+!/broadcast
+/broadcast/*/31337/
+/broadcast/**/dry-run/
+
+# Docs
+docs/
