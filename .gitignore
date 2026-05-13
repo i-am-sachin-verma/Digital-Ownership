@@ -2,9 +2,6 @@
 node_modules/
 frontend/node_modules/
 
-# Frontend full ignore (if needed)
-frontend/
-frontend/
 
 # Env
 .env
