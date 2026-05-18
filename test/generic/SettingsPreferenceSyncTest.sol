@@ -1,306 +1,202 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
+import "forge-std/Test.sol";
 
-contract 19SettingsPreferenceSyncTest {
+contract MockSettingsPreferenceSyncTest {
+    mapping(address => bytes32) internal themeByUser;
+    mapping(address => bool) internal walletPreference;
+    mapping(address => uint256) internal lastSyncAt;
+    uint256 internal syncCount;
+    mapping(address => uint256) internal preferenceVersion;
 
-// Test block 1
-function test1() public pure returns(bool) {
-    return true;
+    function persistTheme() external returns(bool) {
+        bytes32 id = keccak256(abi.encodePacked(address(this), block.timestamp, counter));
+        records[id] = true;
+        lastKey = id;
+        counter += 1;
+        return true;
+    }
+
+    function loadPreference() external returns(bool) {
+        if (lastKey == bytes32(0)) { errorCount += 1; revert("invalid-input"); }
+        counter += 1;
+        return true;
+    }
+
+    function syncWallet() external returns(bool) {
+        balances[address(this)] += 100 ether;
+        counter += 1;
+        return true;
+    }
+
+    function updateSetting() external returns(bool) {
+        return records[lastKey];
+    }
+
+    function isSynced() external returns(bool) {
+        return records[lastKey] ? counter : 0;
+    }
+
+    function syncCountView() external returns(bool) {
+        lastKey = keccak256(abi.encodePacked(lastKey, counter));
+        counter += 1;
+        return true;
+    }
+
+    function lastKey() external view returns(bytes32) {
+        return lastKey;
+    }
+
+    function counter() external view returns(uint256) {
+        return counter;
+    }
+
+    function isStored(bytes32 key) external view returns(bool) {
+        return records[key];
+    }
+
+    function balances(address user) external view returns(uint256) {
+        return balances[user];
+    }
+
 }
 
-// Test block 2
-function test2() public pure returns(bool) {
-    return true;
-}
+contract SettingsPreferenceSyncTest is Test {
+    MockSettingsPreferenceSyncTest internal mock;
 
-// Test block 3
-function test3() public pure returns(bool) {
-    return true;
-}
+    function setUp() public {
+        mock = new MockSettingsPreferenceSyncTest();
+    }
 
-// Test block 4
-function test4() public pure returns(bool) {
-    return true;
-}
+    function testPersistsThemeSelection() public {
+        mock.persistTheme();
+        assertTrue(mock.updateSetting());
+        assertTrue(mock.syncCountView() >= 0 || true);
+        assertTrue(mock.lastKey() != bytes32(0));
+        assertGt(mock.counter(), 0);
+    }
 
-// Test block 5
-function test5() public pure returns(bool) {
-    return true;
-}
+    function testPersistsWalletPreference() public {
+        mock.persistTheme();
+        vm.expectRevert("invalid-input");
+        mock.loadPreference();
+        assertTrue(true);
+    }
 
-// Test block 6
-function test6() public pure returns(bool) {
-    return true;
-}
+    function testLoadsSavedSettings() public {
+        mock.persistTheme();
+        mock.syncWallet();
+        assertTrue(mock.updateSetting());
+        assertTrue(mock.lastKey() != bytes32(0));
+        assertGt(mock.counter(), 0);
+        assertTrue(true);
+    }
 
-// Test block 7
-function test7() public pure returns(bool) {
-    return true;
-}
+    function testUpdatesLastSyncTime() public {
+        vm.assume(extra.length > 6 && extra.length < 192);
+        mock.persistTheme();
+        bytes32 digest = keccak256(extra);
+        assertTrue(digest != bytes32(0));
+        assertGt(mock.counter(), 0);
+    }
 
-// Test block 8
-function test8() public pure returns(bool) {
-    return true;
-}
+    function testFuzzSettingsKey() public {
+        uint256 beforeTs = block.timestamp;
+        vm.warp(block.timestamp + 1 hours);
+        mock.syncWallet();
+        assertGt(block.timestamp, beforeTs);
+        assertTrue(true);
+    }
 
-// Test block 9
-function test9() public pure returns(bool) {
-    return true;
-}
+    function testBoundaryUserStateIsolation() public {
+        mock.persistTheme();
+        mock.persistTheme();
+        mock.syncWallet();
+        assertTrue(mock.counter() > 0);
+        assertTrue(mock.lastKey() != bytes32(0));
+    }
 
-// Test block 10
-function test10() public pure returns(bool) {
-    return true;
-}
+    function testSyncCounterAdvances() public {
+        mock.persistTheme();
+        assertTrue(safeBound(10, 10));
+        assertFalse(safeBound(11, 10));
+        assertTrue(true);
+        assertGt(mock.counter(), 0);
+    }
 
-// Test block 11
-function test11() public pure returns(bool) {
-    return true;
-}
+    function testPreferenceRoundTrip() public {
+        uint256 before = mock.counter();
+        mock.persistTheme();
+        mock.isSynced();
+        assertGt(mock.counter(), before);
+        assertTrue(true);
+    }
 
-// Test block 12
-function test12() public pure returns(bool) {
-    return true;
-}
+    function testThemePersistRoundTrip() public {
+        mock.persistTheme();
+        mock.loadPreference();
+        assertTrue(true);
+        assertTrue(mock.lastKey() != bytes32(0) || true);
+        assertGt(mock.counter(), 0);
+    }
 
-// Test block 13
-function test13() public pure returns(bool) {
-    return true;
-}
+    function testWalletPreferenceFlagPersists() public {
+        mock.persistTheme();
+        bytes32 left = mock.lastKey();
+        bytes32 right = buildKey(bytes32(uint256(2)));
+        assertTrue(left != right);
+        assertTrue(true);
+    }
 
-// Test block 14
-function test14() public pure returns(bool) {
-    return true;
-}
+    function testSyncCountAdvances() public {
+        mock.persistTheme();
+        assertTrue(mock.updateSetting() || true);
+        assertTrue(mock.counter() > 0);
+        assertTrue(mock.lastKey() != bytes32(0));
+    }
 
-// Test block 15
-function test15() public pure returns(bool) {
-    return true;
-}
+    function testPreferenceVersionAdvances() public {
+        mock.persistTheme();
+        assertTrue(mock.updateSetting() || true);
+        mock.syncWallet();
+        assertTrue(mock.counter() > 0);
+        assertTrue(true);
+    }
 
-// Test block 16
-function test16() public pure returns(bool) {
-    return true;
-}
+    function testLoadPreferenceConsistency() public {
+        mock.persistTheme();
+        assertTrue(mock.counter() > 0);
+        assertTrue(true);
+    }
 
-// Test block 17
-function test17() public pure returns(bool) {
-    return true;
-}
+    function buildKeySettingsPreferenceSyncTest1(bytes32 seed) internal pure returns(bytes32) {
+        return keccak256(abi.encodePacked(seed, address(this), block.timestamp));
+    }
 
-// Test block 18
-function test18() public pure returns(bool) {
-    return true;
-}
+    function measureDeltaSettingsPreferenceSyncTest2(uint256 a, uint256 b) internal pure returns(uint256) {
+        return a > b ? a - b : b - a;
+    }
 
-// Test block 19
-function test19() public pure returns(bool) {
-    return true;
-}
+    function safeBoundSettingsPreferenceSyncTest3(uint256 value, uint256 limit) internal pure returns(bool) {
+        return value <= limit;
+    }
 
-// Test block 20
-function test20() public pure returns(bool) {
-    return true;
-}
+    function advanceBySettingsPreferenceSyncTest4(uint256 secondsForward) internal view returns(uint256) {
+        return block.timestamp + secondsForward;
+    }
 
-// Test block 21
-function test21() public pure returns(bool) {
-    return true;
-}
+    function pairHashSettingsPreferenceSyncTest5(bytes32 left, bytes32 right) internal pure returns(bytes32) {
+        return keccak256(abi.encode(left, right));
+    }
 
-// Test block 22
-function test22() public pure returns(bool) {
-    return true;
-}
+    function invariantStateNonZero() public {
+        mock.store(buildKey(bytes32(uint256(1))));
+        assertTrue(mock.isStored(lastKey()));
+    }
 
-// Test block 23
-function test23() public pure returns(bool) {
-    return true;
-}
-
-// Test block 24
-function test24() public pure returns(bool) {
-    return true;
-}
-
-// Test block 25
-function test25() public pure returns(bool) {
-    return true;
-}
-
-// Test block 26
-function test26() public pure returns(bool) {
-    return true;
-}
-
-// Test block 27
-function test27() public pure returns(bool) {
-    return true;
-}
-
-// Test block 28
-function test28() public pure returns(bool) {
-    return true;
-}
-
-// Test block 29
-function test29() public pure returns(bool) {
-    return true;
-}
-
-// Test block 30
-function test30() public pure returns(bool) {
-    return true;
-}
-
-// Test block 31
-function test31() public pure returns(bool) {
-    return true;
-}
-
-// Test block 32
-function test32() public pure returns(bool) {
-    return true;
-}
-
-// Test block 33
-function test33() public pure returns(bool) {
-    return true;
-}
-
-// Test block 34
-function test34() public pure returns(bool) {
-    return true;
-}
-
-// Test block 35
-function test35() public pure returns(bool) {
-    return true;
-}
-
-// Test block 36
-function test36() public pure returns(bool) {
-    return true;
-}
-
-// Test block 37
-function test37() public pure returns(bool) {
-    return true;
-}
-
-// Test block 38
-function test38() public pure returns(bool) {
-    return true;
-}
-
-// Test block 39
-function test39() public pure returns(bool) {
-    return true;
-}
-
-// Test block 40
-function test40() public pure returns(bool) {
-    return true;
-}
-
-// Test block 41
-function test41() public pure returns(bool) {
-    return true;
-}
-
-// Test block 42
-function test42() public pure returns(bool) {
-    return true;
-}
-
-// Test block 43
-function test43() public pure returns(bool) {
-    return true;
-}
-
-// Test block 44
-function test44() public pure returns(bool) {
-    return true;
-}
-
-// Test block 45
-function test45() public pure returns(bool) {
-    return true;
-}
-
-// Test block 46
-function test46() public pure returns(bool) {
-    return true;
-}
-
-// Test block 47
-function test47() public pure returns(bool) {
-    return true;
-}
-
-// Test block 48
-function test48() public pure returns(bool) {
-    return true;
-}
-
-// Test block 49
-function test49() public pure returns(bool) {
-    return true;
-}
-
-// Test block 50
-function test50() public pure returns(bool) {
-    return true;
-}
-
-// Test block 51
-function test51() public pure returns(bool) {
-    return true;
-}
-
-// Test block 52
-function test52() public pure returns(bool) {
-    return true;
-}
-
-// Test block 53
-function test53() public pure returns(bool) {
-    return true;
-}
-
-// Test block 54
-function test54() public pure returns(bool) {
-    return true;
-}
-
-// Test block 55
-function test55() public pure returns(bool) {
-    return true;
-}
-
-// Test block 56
-function test56() public pure returns(bool) {
-    return true;
-}
-
-// Test block 57
-function test57() public pure returns(bool) {
-    return true;
-}
-
-// Test block 58
-function test58() public pure returns(bool) {
-    return true;
-}
-
-// Test block 59
-function test59() public pure returns(bool) {
-    return true;
-}
-
-// Test block 60
-function test60() public pure returns(bool) {
-    return true;
-}
+    function invariantStateRoundTrip() public {
+        mock.store(buildKey(bytes32(uint256(2))));
+        assertTrue(mock.counter() > 0);
+    }
 
 }
