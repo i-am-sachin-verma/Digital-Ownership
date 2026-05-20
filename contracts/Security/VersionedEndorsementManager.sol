@@ -58,7 +58,7 @@ contract VersionedEndorsementManager {
         uint256 revokedCount;
 
         uint256 expiredCount;
-    };
+    }
 
 
 

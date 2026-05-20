@@ -53,7 +53,7 @@ contract AdvancedIdentityRegistry is ERC721, AccessControl {
         bool rejected;
 
         uint256 submittedAt;
-    };
+    }
 
 
 
@@ -64,7 +64,7 @@ contract AdvancedIdentityRegistry is ERC721, AccessControl {
         string actionType;
 
         address actor;
-    };
+    }
 
 
 

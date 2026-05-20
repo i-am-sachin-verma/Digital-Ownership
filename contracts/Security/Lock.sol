@@ -61,7 +61,7 @@ contract DynamicMetadataStorage is AccessControl {
         bool enabled;
 
         uint32 maxKeys;
-    };
+    }
 
 
 

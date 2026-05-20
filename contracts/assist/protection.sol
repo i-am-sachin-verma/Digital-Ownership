@@ -32,7 +32,7 @@ contract GaslessEndorsementManager {
         uint256 timestamp;
 
         bool active;
-    };
+    }
 
 
 

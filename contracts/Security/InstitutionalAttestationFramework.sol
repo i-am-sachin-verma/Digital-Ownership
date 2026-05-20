@@ -55,7 +55,7 @@ contract InstitutionalAttestationFramework is AccessControl {
         bool active;
 
         uint256 reputation;
-    };
+    }
 
 
 
@@ -80,7 +80,7 @@ contract InstitutionalAttestationFramework is AccessControl {
         uint256 expiry;
 
         CredentialStatus status;
-    };
+    }
 
 
 
@@ -95,7 +95,7 @@ contract InstitutionalAttestationFramework is AccessControl {
         bool verified;
 
         uint256 issuedCredentials;
-    };
+    }
 
 
 

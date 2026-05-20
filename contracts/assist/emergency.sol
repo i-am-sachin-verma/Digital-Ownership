@@ -34,7 +34,7 @@ contract EmergencyPausableIdentitySystem is
         uint64 createdAt;
 
         bool active;
-    };
+    }
 
 
 
@@ -47,7 +47,7 @@ contract EmergencyPausableIdentitySystem is
         uint64 timestamp;
 
         bool active;
-    };
+    }
 
 
 

@@ -89,7 +89,7 @@ contract SignatureBackupRecovery
         uint256 timestamp;
 
         bool resolved;
-    };
+    }
 
 
 
