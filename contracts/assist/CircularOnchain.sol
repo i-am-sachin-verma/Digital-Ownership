@@ -14,7 +14,7 @@ contract CircularEndorsementDetector {
         uint256 timestamp;
 
         bool active;
-    };
+    }
 
 
 

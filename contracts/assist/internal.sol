@@ -63,7 +63,7 @@ contract HierarchicalInstitutionRoles is AccessControl {
         uint64 createdAt;
 
         bool active;
-    };
+    }
 
 
 
@@ -84,7 +84,7 @@ contract HierarchicalInstitutionRoles is AccessControl {
         uint64 expiry;
 
         bool revoked;
-    };
+    }
 
 
 

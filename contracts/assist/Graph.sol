@@ -14,7 +14,7 @@ contract IndexedEventIdentitySystem {
         uint256 reputation;
 
         bool active;
-    };
+    }
 
 
 
@@ -29,7 +29,7 @@ contract IndexedEventIdentitySystem {
         uint256 createdAt;
 
         bool active;
-    };
+    }
 
 
 

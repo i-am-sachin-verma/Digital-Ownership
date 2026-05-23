@@ -65,7 +65,7 @@ contract SecureRecoveryManager {
         string reason;
 
         uint256 timestamp;
-    };
+    }
 
 
 

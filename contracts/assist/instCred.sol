@@ -54,7 +54,7 @@ contract InstitutionalCredentialRevocation is AccessControl {
         uint64 expiry;
 
         CredentialStatus status;
-    };
+    }
 
 
 
@@ -67,7 +67,7 @@ contract InstitutionalCredentialRevocation is AccessControl {
         uint256 issuedCredentials;
 
         uint256 revokedCredentials;
-    };
+    }
 
 
 

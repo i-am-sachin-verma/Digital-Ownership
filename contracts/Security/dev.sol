@@ -43,7 +43,7 @@ contract DecentralizedTrustScoring {
         uint256 activityScore;
 
         uint256 updatedAt;
-    };
+    }
 
 
 
