@@ -1,0 +1,27 @@
+[
+  {
+    "type": "function",
+    "name": "setData",
+    "inputs": [
+      { "name": "id", "type": "uint256" },
+      { "name": "value", "type": "string" }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "getData",
+    "inputs": [{ "name": "id", "type": "uint256" }],
+    "outputs": [{ "name": "", "type": "string" }],
+    "stateMutability": "view"
+  },
+  {
+    "type": "event",
+    "name": "DataUpdated",
+    "inputs": [
+      { "name": "id", "type": "uint256", "indexed": true },
+      { "name": "value", "type": "string", "indexed": true }
+    ]
+  }
+]
