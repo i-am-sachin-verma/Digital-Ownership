@@ -355,25 +355,29 @@ contract TrustGraphManager {
         uint256[] memory firstLevel =
             forwardAdjacency[tokenId];
 
+        uint256 firstLen = firstLevel.length;
 
+        // Pass 1: count the exact number of second-degree entries so the result
+        // array can be allocated to the right size. The previous approach used
+        // firstLevel.length * 10 as an upper bound, which is an arbitrary heuristic
+        // with no contract invariant to back it. Any first-degree neighbor with
+        // more than 10 outgoing edges causes an out-of-bounds Panic(0x32) revert,
+        // permanently DoS-ing this view for the affected tokenId.
+        uint256 totalCount;
 
-        uint256 maxSize =
-            firstLevel.length * 10;
+        for (uint256 i = 0; i < firstLen; i++) {
+            totalCount += forwardAdjacency[firstLevel[i]].length;
+        }
 
+        uint256[] memory result =
+            new uint256[](totalCount);
 
+        uint256 index;
 
-        uint256[] memory temp =
-            new uint256[](maxSize);
-
-
-
-        uint256 counter;
-
-
-
+        // Pass 2: fill the result array.
         for (
             uint256 i = 0;
-            i < firstLevel.length;
+            i < firstLen;
             i++
         ) {
 
@@ -385,37 +389,20 @@ contract TrustGraphManager {
             uint256[] memory secondLevel =
                 forwardAdjacency[neighbor];
 
-
+            uint256 secondLen = secondLevel.length;
 
             for (
                 uint256 j = 0;
-                j < secondLevel.length;
+                j < secondLen;
                 j++
             ) {
 
-                temp[counter] =
+                result[index] =
                     secondLevel[j];
 
-                counter++;
+                index++;
             }
         }
-
-
-
-        uint256[] memory result =
-            new uint256[](counter);
-
-
-
-        for (
-            uint256 i = 0;
-            i < counter;
-            i++
-        ) {
-            result[i] = temp[i];
-        }
-
-
 
         return result;
     }
