@@ -81,9 +81,18 @@ contract CrowdfundingPlatform {
         require(c.raised >= c.goal, "Goal not met");
         require(!c.claimed, "Already claimed");
 
+        // Checks-Effects-Interactions: update state before the external call to
+        // prevent reentrancy. Zero out raised so a re-entrant claim gets 0 value.
         c.claimed = true;
+        uint256 amount = c.raised;
+        c.raised = 0;
 
-        payable(c.creator).transfer(c.raised);
+        // Use low-level call instead of transfer() to support contract-based
+        // creators (smart contract wallets, Gnosis Safe, multi-sig proxies).
+        // transfer() forwards only 2300 gas, which is insufficient for any
+        // contract with a non-trivial receive/fallback, permanently locking funds.
+        (bool success, ) = payable(c.creator).call{value: amount}("");
+        require(success, "Transfer failed");
 
         emit Claimed(id);
     }
@@ -103,7 +112,10 @@ contract CrowdfundingPlatform {
 
         contributions[id][msg.sender] = 0;
 
-        payable(msg.sender).transfer(amount);
+        // Use low-level call for the same reason as claim(): transfer() forwards
+        // only 2300 gas and will revert for contract-based contributors.
+        (bool success, ) = payable(msg.sender).call{value: amount}("");
+        require(success, "Refund failed");
 
         emit Refunded(id, msg.sender);
     }
