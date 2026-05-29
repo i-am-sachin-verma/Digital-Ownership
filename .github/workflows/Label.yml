@@ -44,21 +44,38 @@ jobs:
               });
             }
 
-      - name: Detect NSOC variations and apply label
+      - name: Detect NSOC variations and apply labels
         uses: actions/github-script@v6
         with:
           script: |
             const issue = context.payload.issue;
             const title = issue.title.toLowerCase();
 
+            // Handle general NSOC labels
             const keywords = ["nsoc", "nsoc26", "nsoc'26", "nsoc 26", "nsoc-26"];
             const isNSOC = keywords.some(k => title.includes(k));
 
+            const labelsToAdd = [];
             if (isNSOC) {
+              labelsToAdd.push("NSOC'26");
+            }
+
+            // Semantic prefix parsing
+            if (title.startsWith("fix:") || title.includes("bug")) {
+              labelsToAdd.push("bug");
+            } else if (title.startsWith("feat:") || title.includes("feature")) {
+              labelsToAdd.push("enhancement");
+            } else if (title.startsWith("docs:") || title.includes("documentation") || title.includes("readme")) {
+              labelsToAdd.push("documentation");
+            } else if (title.startsWith("refactor:") || title.startsWith("perf:") || title.startsWith("style:")) {
+              labelsToAdd.push("refactor");
+            }
+
+            if (labelsToAdd.length > 0) {
               await github.rest.issues.addLabels({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: issue.number,
-                labels: ["NSOC'26"]
+                labels: labelsToAdd
               });
             }
