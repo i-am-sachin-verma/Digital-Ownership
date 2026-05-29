@@ -1,7 +1,8 @@
 import { useState, useCallback } from 'react';
 import { Contract } from 'ethers';
 import { useWallet } from './useWallet';
-import { contractHelpers } from '../lib/contractHelpers';
+import { withRetry } from '../lib/transactionUtils';
+import contractHelpers from '../lib/contractHelpers';
 import { CONTRACT_ADDRESSES, DEFAULT_CHAIN_ID, ABIS } from '../constants/contracts';
 
 export const useCoreLogic = () => {
@@ -15,11 +16,7 @@ export const useCoreLogic = () => {
     const address = CONTRACT_ADDRESSES[activeChainId]?.CoreLogic;
     if (!address) throw new Error(`Contract not deployed on chain ${activeChainId}`);
     
-    return new Contract(
-      address, 
-      ABIS.CoreLogic, 
-      useSigner ? signer : provider
-    );
+    return new Contract(address, ABIS.CoreLogic, useSigner ? signer : provider);
   }, [provider, signer, chainId]);
 
   const getData = useCallback(async (id: number): Promise<string | null> => {
@@ -46,10 +43,10 @@ export const useCoreLogic = () => {
     try {
       if (!signer) throw new Error("Wallet not connected");
       const contract = getContract(true);
-      const tx = await contract.setData(id, value);
+      
+      const tx = await withRetry(() => contract.setData(id, value));
       const receipt = await tx.wait();
       
-      // Invalidate cache
       contractHelpers.invalidate(`data-${id}-${chainId}`);
       return receipt.hash;
     } catch (err: any) {
