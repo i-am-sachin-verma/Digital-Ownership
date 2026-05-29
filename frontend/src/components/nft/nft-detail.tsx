@@ -199,7 +199,7 @@ export default function NftDetail() {
       <footer className="rounded-3xl border border-slate-200 bg-slate-50 p-5">
         <h3 className="text-sm font-semibold text-slate-900">Selected section</h3>
         <p className="mt-2 text-sm text-slate-600">
-          {activeChunk.label} is the active review lane for {left_label.toLowerCase()} versus {right_label.toLowerCase()} analysis.
+          {activeChunk.label} is the active review lane for original versus updated analysis.
         </p>
       </footer>
     </section>
