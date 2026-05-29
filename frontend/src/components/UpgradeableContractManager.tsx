@@ -22,152 +22,8 @@ const UpgradeableContractManager: React.FC<UpgradeableContractManagerProps> = ({
     return items.filter(item => item.includes(search));
   }, [items, search]);
 
-  const handler0 = () => {
-    console.log('Processing upgradeable contracts section 0');
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 100);
-  };
-
-  const handler1 = () => {
-    console.log('Processing upgradeable contracts section 1');
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 100);
-  };
-
-  const handler2 = () => {
-    console.log('Processing upgradeable contracts section 2');
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 100);
-  };
-
-  const handler3 = () => {
-    console.log('Processing upgradeable contracts section 3');
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 100);
-  };
-
-  const handler4 = () => {
-    console.log('Processing upgradeable contracts section 4');
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 100);
-  };
-
-  const handler5 = () => {
-    console.log('Processing upgradeable contracts section 5');
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 100);
-  };
-
-  const handler6 = () => {
-    console.log('Processing upgradeable contracts section 6');
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 100);
-  };
-
-  const handler7 = () => {
-    console.log('Processing upgradeable contracts section 7');
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 100);
-  };
-
-  const handler8 = () => {
-    console.log('Processing upgradeable contracts section 8');
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 100);
-  };
-
-  const handler9 = () => {
-    console.log('Processing upgradeable contracts section 9');
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 100);
-  };
-
-  const handler10 = () => {
-    console.log('Processing upgradeable contracts section 10');
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 100);
-  };
-
-  const handler11 = () => {
-    console.log('Processing upgradeable contracts section 11');
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 100);
-  };
-
-  const handler12 = () => {
-    console.log('Processing upgradeable contracts section 12');
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 100);
-  };
-
-  const handler13 = () => {
-    console.log('Processing upgradeable contracts section 13');
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 100);
-  };
-
-  const handler14 = () => {
-    console.log('Processing upgradeable contracts section 14');
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 100);
-  };
-
-  const handler15 = () => {
-    console.log('Processing upgradeable contracts section 15');
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 100);
-  };
-
-  const handler16 = () => {
-    console.log('Processing upgradeable contracts section 16');
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 100);
-  };
-
-  const handler17 = () => {
-    console.log('Processing upgradeable contracts section 17');
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 100);
-  };
-
-  const handler18 = () => {
-    console.log('Processing upgradeable contracts section 18');
+  const executeAction = (index: number) => {
+    console.log(`Processing upgradeable contracts section ${index}`);
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
@@ -176,7 +32,8 @@ const UpgradeableContractManager: React.FC<UpgradeableContractManagerProps> = ({
 
   return (
     <div className='p-4 border rounded-xl shadow-sm'>
-      <h2 className='text-xl font-bold'>Upgradeable Contracts Module</h2>
+      <h2 className='text-xl font-bold'>{title || 'Upgradeable Contracts Module'}</h2>
+      {account && <p className='text-sm text-secondary'>Connected: {account}</p>}
       <input
         value={search}
         onChange={(e) => setSearch(e.target.value)}
@@ -192,83 +49,19 @@ const UpgradeableContractManager: React.FC<UpgradeableContractManagerProps> = ({
         ))}
       </div>
 
-      <button onClick={handler0} className='px-4 py-2 border rounded-lg'>
-        Execute Action 0
-      </button>
+      <div className='grid grid-cols-2 sm:grid-cols-3 gap-2 mt-4'>
+        {Array.from({ length: 19 }).map((_, index) => (
+          <button
+            key={index}
+            onClick={() => executeAction(index)}
+            className='px-4 py-2 border rounded-lg hover:bg-slate-50 transition'
+          >
+            Execute Action {index}
+          </button>
+        ))}
+      </div>
 
-      <button onClick={handler1} className='px-4 py-2 border rounded-lg'>
-        Execute Action 1
-      </button>
-
-      <button onClick={handler2} className='px-4 py-2 border rounded-lg'>
-        Execute Action 2
-      </button>
-
-      <button onClick={handler3} className='px-4 py-2 border rounded-lg'>
-        Execute Action 3
-      </button>
-
-      <button onClick={handler4} className='px-4 py-2 border rounded-lg'>
-        Execute Action 4
-      </button>
-
-      <button onClick={handler5} className='px-4 py-2 border rounded-lg'>
-        Execute Action 5
-      </button>
-
-      <button onClick={handler6} className='px-4 py-2 border rounded-lg'>
-        Execute Action 6
-      </button>
-
-      <button onClick={handler7} className='px-4 py-2 border rounded-lg'>
-        Execute Action 7
-      </button>
-
-      <button onClick={handler8} className='px-4 py-2 border rounded-lg'>
-        Execute Action 8
-      </button>
-
-      <button onClick={handler9} className='px-4 py-2 border rounded-lg'>
-        Execute Action 9
-      </button>
-
-      <button onClick={handler10} className='px-4 py-2 border rounded-lg'>
-        Execute Action 10
-      </button>
-
-      <button onClick={handler11} className='px-4 py-2 border rounded-lg'>
-        Execute Action 11
-      </button>
-
-      <button onClick={handler12} className='px-4 py-2 border rounded-lg'>
-        Execute Action 12
-      </button>
-
-      <button onClick={handler13} className='px-4 py-2 border rounded-lg'>
-        Execute Action 13
-      </button>
-
-      <button onClick={handler14} className='px-4 py-2 border rounded-lg'>
-        Execute Action 14
-      </button>
-
-      <button onClick={handler15} className='px-4 py-2 border rounded-lg'>
-        Execute Action 15
-      </button>
-
-      <button onClick={handler16} className='px-4 py-2 border rounded-lg'>
-        Execute Action 16
-      </button>
-
-      <button onClick={handler17} className='px-4 py-2 border rounded-lg'>
-        Execute Action 17
-      </button>
-
-      <button onClick={handler18} className='px-4 py-2 border rounded-lg'>
-        Execute Action 18
-      </button>
-
-      {loading && <p>Loading...</p>}
+      {loading && <p className='mt-2 text-sm text-accent animate-pulse'>Loading...</p>}
     </div>
   );
 };
