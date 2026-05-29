@@ -227,9 +227,17 @@ contract VersionedEndorsementManager {
             "Unauthorized"
         );
 
+        // Guard against double-decrement: if the endorsement has already been
+        // transitioned to EXPIRED or REVOKED the active counters were already
+        // decremented by markExpired() or a prior revokeEndorsement() call.
+        // Checking status (not just the revoked flag) closes the desync window
+        // where markExpired() sets status=EXPIRED but leaves revoked=false,
+        // which would allow revokeEndorsement() to pass the old !revoked guard
+        // and decrement activeCredentialCount/activeCount a second time.
         require(
-            !endorsement.revoked,
-            "Already revoked"
+            endorsement.status
+                == EndorsementStatus.ACTIVE,
+            "Endorsement is not active"
         );
 
 
