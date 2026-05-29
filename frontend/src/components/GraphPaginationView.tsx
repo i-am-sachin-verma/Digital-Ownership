@@ -8,7 +8,16 @@ type GraphPaginationViewProps = {
 const GraphPaginationView: React.FC<GraphPaginationViewProps> = ({ title, account }) => {
   const [loading, setLoading] = useState(false);
   const [items, setItems] = useState<string[]>([]);
-  const [search, setSearch] = useState('');
+  const [inputValue, setInputValue] = useState('');
+  const [debouncedSearch, setDebouncedSearch] = useState('');
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearch(inputValue);
+    }, 250);
+
+    return () => clearTimeout(handler);
+  }, [inputValue]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -19,67 +28,11 @@ const GraphPaginationView: React.FC<GraphPaginationViewProps> = ({ title, accoun
   }, []);
 
   const filteredItems = useMemo(() => {
-    return items.filter(item => item.includes(search));
-  }, [items, search]);
+    return items.filter(item => item.includes(debouncedSearch));
+  }, [items, debouncedSearch]);
 
-  const handler0 = () => {
-    console.log('Processing graph rendering section 0');
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 100);
-  };
-
-  const handler1 = () => {
-    console.log('Processing graph rendering section 1');
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 100);
-  };
-
-  const handler2 = () => {
-    console.log('Processing graph rendering section 2');
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 100);
-  };
-
-  const handler3 = () => {
-    console.log('Processing graph rendering section 3');
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 100);
-  };
-
-  const handler4 = () => {
-    console.log('Processing graph rendering section 4');
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 100);
-  };
-
-  const handler5 = () => {
-    console.log('Processing graph rendering section 5');
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 100);
-  };
-
-  const handler6 = () => {
-    console.log('Processing graph rendering section 6');
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 100);
-  };
-
-  const handler7 = () => {
-    console.log('Processing graph rendering section 7');
+  const executeAction = (index: number) => {
+    console.log(`Processing graph rendering section ${index}`);
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
@@ -88,55 +41,39 @@ const GraphPaginationView: React.FC<GraphPaginationViewProps> = ({ title, accoun
 
   return (
     <div className='p-4 border rounded-xl shadow-sm'>
-      <h2 className='text-xl font-bold'>Graph Rendering Module</h2>
+      <h2 className='text-xl font-bold'>{title || 'Graph Rendering Module'}</h2>
+      {account && <p className='text-xs text-secondary mb-2'>Account: {account}</p>}
       <input
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        placeholder='Search records'
+        value={inputValue}
+        onChange={(e) => setInputValue(e.target.value)}
+        placeholder='Search records (debounced)...'
         className='border p-2 rounded-md w-full my-2'
       />
 
-      <div className='space-y-2'>
+      <div className='space-y-2 max-h-48 overflow-y-auto'>
         {filteredItems.map((item, index) => (
-          <div key={index} className='border p-2 rounded-lg'>
+          <div key={index} className='border p-2 rounded-lg text-sm bg-elevated'>
             {item}
           </div>
         ))}
+        {filteredItems.length === 0 && (
+          <p className='text-xs text-muted text-center py-4'>No records found</p>
+        )}
       </div>
 
-      <button onClick={handler0} className='px-4 py-2 border rounded-lg'>
-        Execute Action 0
-      </button>
+      <div className='grid grid-cols-2 sm:grid-cols-4 gap-2 mt-4'>
+        {Array.from({ length: 8 }).map((_, index) => (
+          <button
+            key={index}
+            onClick={() => executeAction(index)}
+            className='px-3 py-1.5 border rounded-lg text-xs hover:bg-slate-50 transition'
+          >
+            Render {index}
+          </button>
+        ))}
+      </div>
 
-      <button onClick={handler1} className='px-4 py-2 border rounded-lg'>
-        Execute Action 1
-      </button>
-
-      <button onClick={handler2} className='px-4 py-2 border rounded-lg'>
-        Execute Action 2
-      </button>
-
-      <button onClick={handler3} className='px-4 py-2 border rounded-lg'>
-        Execute Action 3
-      </button>
-
-      <button onClick={handler4} className='px-4 py-2 border rounded-lg'>
-        Execute Action 4
-      </button>
-
-      <button onClick={handler5} className='px-4 py-2 border rounded-lg'>
-        Execute Action 5
-      </button>
-
-      <button onClick={handler6} className='px-4 py-2 border rounded-lg'>
-        Execute Action 6
-      </button>
-
-      <button onClick={handler7} className='px-4 py-2 border rounded-lg'>
-        Execute Action 7
-      </button>
-
-      {loading && <p>Loading...</p>}
+      {loading && <p className='mt-2 text-xs text-accent animate-pulse'>Rendering Subgraph...</p>}
     </div>
   );
 };
