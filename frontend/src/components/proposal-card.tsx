@@ -11,6 +11,7 @@ export interface GovernanceProposalCardProps {
   variant?: Variant;
   size?: Size;
   children?: React.ReactNode;
+  items?: DataItem[];
 }
 
 const cx = (...parts: Array<string | false | null | undefined>) =>
@@ -181,9 +182,7 @@ function ItemFilters({ items, query }: { items: DataItem[]; query: string }) {
   );
 }
 
-export interface GovernanceProposalCardProps extends GovernanceProposalCardProps {
-  items?: DataItem[];
-}
+
 
 export default function GovernanceProposalCard({
   title = "Governance Proposal Card",
