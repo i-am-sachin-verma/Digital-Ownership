@@ -1,238 +1,85 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useContext } from 'react';
+import { WalletContext } from '../context/WalletContext';
 
 type WalletConnectButtonProps = {
   title?: string;
-  account?: string;
 };
 
-const WalletConnectButton: React.FC<WalletConnectButtonProps> = ({ title, account }) => {
-  const [loading, setLoading] = useState(false);
-  const [items, setItems] = useState<string[]>([]);
-  const [search, setSearch] = useState('');
+const WalletConnectButton: React.FC<WalletConnectButtonProps> = ({ title }) => {
+  const context = useContext(WalletContext);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setItems(prev => [...prev]);
-    }, 200);
+  if (!context) {
+    return (
+      <div className='p-4 border rounded-xl bg-red-50 text-red-700'>
+        WalletContext not found. Make sure to wrap App in WalletProvider.
+      </div>
+    );
+  }
 
-    return () => clearTimeout(timer);
-  }, []);
+  const { account, chainId, isConnecting, isConnected, connect, disconnect, error } = context;
 
-  const filteredItems = useMemo(() => {
-    return items.filter(item => item.includes(search));
-  }, [items, search]);
-
-  const handler0 = () => {
-    console.log('Processing wallet connection section 0');
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 100);
-  };
-
-  const handler1 = () => {
-    console.log('Processing wallet connection section 1');
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 100);
-  };
-
-  const handler2 = () => {
-    console.log('Processing wallet connection section 2');
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 100);
-  };
-
-  const handler3 = () => {
-    console.log('Processing wallet connection section 3');
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 100);
-  };
-
-  const handler4 = () => {
-    console.log('Processing wallet connection section 4');
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 100);
-  };
-
-  const handler5 = () => {
-    console.log('Processing wallet connection section 5');
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 100);
-  };
-
-  const handler6 = () => {
-    console.log('Processing wallet connection section 6');
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 100);
-  };
-
-  const handler7 = () => {
-    console.log('Processing wallet connection section 7');
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 100);
-  };
-
-  const handler8 = () => {
-    console.log('Processing wallet connection section 8');
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 100);
-  };
-
-  const handler9 = () => {
-    console.log('Processing wallet connection section 9');
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 100);
-  };
-
-  const handler10 = () => {
-    console.log('Processing wallet connection section 10');
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 100);
-  };
-
-  const handler11 = () => {
-    console.log('Processing wallet connection section 11');
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 100);
-  };
-
-  const handler12 = () => {
-    console.log('Processing wallet connection section 12');
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 100);
-  };
-
-  const handler13 = () => {
-    console.log('Processing wallet connection section 13');
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 100);
-  };
-
-  const handler14 = () => {
-    console.log('Processing wallet connection section 14');
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 100);
-  };
-
-  const handler15 = () => {
-    console.log('Processing wallet connection section 15');
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 100);
+  const truncateAddress = (addr: string) => {
+    return `${addr.slice(0, 6)}...${addr.slice(-4)}`;
   };
 
   return (
-    <div className='p-4 border rounded-xl shadow-sm'>
-      <h2 className='text-xl font-bold'>Wallet Connection Module</h2>
-      <input
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        placeholder='Search records'
-        className='border p-2 rounded-md w-full my-2'
-      />
-
-      <div className='space-y-2'>
-        {filteredItems.map((item, index) => (
-          <div key={index} className='border p-2 rounded-lg'>
-            {item}
-          </div>
-        ))}
+    <div className='p-4 border rounded-xl shadow-sm bg-surface glass-card flex flex-col gap-3'>
+      <div className='flex justify-between items-center'>
+        <h3 className='text-sm font-bold tracking-wide uppercase text-secondary'>
+          {title || 'Wallet Provider'}
+        </h3>
+        <div className='flex items-center gap-2'>
+          <span className={`dot ${isConnected ? 'dot-success dot-pulse' : 'dot-muted'}`} />
+          <span className='text-xs font-semibold text-muted'>
+            {isConnected ? 'Connected' : 'Disconnected'}
+          </span>
+        </div>
       </div>
 
-      <button onClick={handler0} className='px-4 py-2 border rounded-lg'>
-        Execute Action 0
-      </button>
+      {isConnected && account ? (
+        <div className='flex flex-col gap-1 p-3 bg-elevated rounded-lg border'>
+          <div className='flex justify-between text-xs text-secondary'>
+            <span>Address:</span>
+            <span className='mono font-semibold text-primary'>{truncateAddress(account)}</span>
+          </div>
+          {chainId && (
+            <div className='flex justify-between text-xs text-secondary'>
+              <span>Network ID:</span>
+              <span className='mono font-semibold text-primary'>{chainId}</span>
+            </div>
+          )}
+        </div>
+      ) : (
+        <p className='text-xs text-secondary'>
+          Connect your Web3 browser wallet to interact with Digital Ownership smart contracts.
+        </p>
+      )}
 
-      <button onClick={handler1} className='px-4 py-2 border rounded-lg'>
-        Execute Action 1
-      </button>
+      {error && <p className='text-xs text-danger'>{error}</p>}
 
-      <button onClick={handler2} className='px-4 py-2 border rounded-lg'>
-        Execute Action 2
-      </button>
-
-      <button onClick={handler3} className='px-4 py-2 border rounded-lg'>
-        Execute Action 3
-      </button>
-
-      <button onClick={handler4} className='px-4 py-2 border rounded-lg'>
-        Execute Action 4
-      </button>
-
-      <button onClick={handler5} className='px-4 py-2 border rounded-lg'>
-        Execute Action 5
-      </button>
-
-      <button onClick={handler6} className='px-4 py-2 border rounded-lg'>
-        Execute Action 6
-      </button>
-
-      <button onClick={handler7} className='px-4 py-2 border rounded-lg'>
-        Execute Action 7
-      </button>
-
-      <button onClick={handler8} className='px-4 py-2 border rounded-lg'>
-        Execute Action 8
-      </button>
-
-      <button onClick={handler9} className='px-4 py-2 border rounded-lg'>
-        Execute Action 9
-      </button>
-
-      <button onClick={handler10} className='px-4 py-2 border rounded-lg'>
-        Execute Action 10
-      </button>
-
-      <button onClick={handler11} className='px-4 py-2 border rounded-lg'>
-        Execute Action 11
-      </button>
-
-      <button onClick={handler12} className='px-4 py-2 border rounded-lg'>
-        Execute Action 12
-      </button>
-
-      <button onClick={handler13} className='px-4 py-2 border rounded-lg'>
-        Execute Action 13
-      </button>
-
-      <button onClick={handler14} className='px-4 py-2 border rounded-lg'>
-        Execute Action 14
-      </button>
-
-      <button onClick={handler15} className='px-4 py-2 border rounded-lg'>
-        Execute Action 15
-      </button>
-
-      {loading && <p>Loading...</p>}
+      {isConnected ? (
+        <button
+          onClick={disconnect}
+          className='w-full py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-lg transition font-medium text-sm'
+        >
+          Disconnect Session
+        </button>
+      ) : (
+        <button
+          onClick={connect}
+          disabled={isConnecting}
+          className='w-full py-2 bg-accent hover:bg-accent-dark text-white rounded-lg transition font-medium text-sm disabled:opacity-60 flex items-center justify-center gap-2'
+        >
+          {isConnecting ? (
+            <>
+              <span className='animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full' />
+              Connecting...
+            </>
+          ) : (
+            'Connect Wallet'
+          )}
+        </button>
+      )}
     </div>
   );
 };
