@@ -1,6 +1,6 @@
 import React,{useState,useMemo,useEffect} from 'react';
 
-const 19SettingsSyncPage=()=>{
+const SettingsSyncPage=()=>{
 const [loading,setLoading]=useState(false);
 const [search,setSearch]=useState('');
 const [items,setItems]=useState<string[]>([]);
@@ -293,4 +293,4 @@ return (
 </div>
 );
 }
-export default 19SettingsSyncPage;
+export default SettingsSyncPage;
