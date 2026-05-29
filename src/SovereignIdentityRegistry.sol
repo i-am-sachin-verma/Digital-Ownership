@@ -18,8 +18,8 @@ contract SovereignIdentityRegistry {
 
     function registerIdentity(bytes32 _identityHash) external {
         Identity storage identity = identities[msg.sender];
-        require(!identity.registered, "User already registered");
-        require(_identityHash != bytes32(0), "Invalid identity hash");
+        if (identity.registered) revert AlreadyRegistered();
+        if (_identityHash == bytes32(0)) revert InvalidIdentity();
         
         identity.hash = _identityHash;
         identity.registered = true;
@@ -41,15 +41,15 @@ contract SovereignIdentityRegistry {
     }
 
     function getIdentityHash(address user) external view returns (bytes32) {
-        require(user != address(0), "Invalid user address");
+        if (user == address(0)) revert InvalidIdentity();
         Identity storage identity = identities[user];
-        require(identity.registered, "User not registered");
+        if (!identity.registered) revert NotRegistered();
         return identity.hash;
     }
 
     function verifyIdentity(address user, bytes32 _hash) external view returns (bool) {
-        require(user != address(0), "Invalid user address");
-        require(_hash != bytes32(0), "Invalid hash to verify");
+        if (user == address(0)) revert InvalidIdentity();
+        if (_hash == bytes32(0)) revert InvalidIdentity();
         return identities[user].hash == _hash;
     }
 }
