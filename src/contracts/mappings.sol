@@ -3,6 +3,11 @@ pragma solidity ^0.8.20;
 
 contract OptimizedNestedMappings {
 
+    error InsufficientAllowance();
+    error UnderflowError();
+    error LimitExceededError();
+    error NotEnoughVotesError();
+
     mapping(address => mapping(address => uint256))
         public allowances;
 
@@ -74,10 +79,7 @@ contract OptimizedNestedMappings {
         uint256 currentAllowance =
             allowances[owner][msg.sender];
 
-        require(
-            currentAllowance >= amount,
-            "Insufficient allowance"
-        );
+        if (currentAllowance < amount) revert InsufficientAllowance();
 
         uint256 updatedAllowance =
             currentAllowance - amount;
@@ -131,10 +133,7 @@ contract OptimizedNestedMappings {
         uint256 current =
             allowances[msg.sender][spender];
 
-        require(
-            current >= amount,
-            "Underflow"
-        );
+        if (current < amount) revert UnderflowError();
 
         uint256 updated =
             current - amount;
@@ -274,10 +273,7 @@ contract OptimizedNestedMappings {
         uint256 current =
             userLimits[day];
 
-        require(
-            current >= amount,
-            "Limit exceeded"
-        );
+        if (current < amount) revert LimitExceededError();
 
         uint256 updated =
             current - amount;
@@ -330,10 +326,7 @@ contract OptimizedNestedMappings {
         uint256 senderVotes =
             voteMap[from];
 
-        require(
-            senderVotes >= votes,
-            "Not enough votes"
-        );
+        if (senderVotes < votes) revert NotEnoughVotesError();
 
         voteMap[from] =
             senderVotes - votes;
