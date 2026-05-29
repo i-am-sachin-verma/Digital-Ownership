@@ -39,12 +39,14 @@ contract AccessController {
     }
 
     function suspendAdmin(address user) external onlySecurityCouncil {
+        require(user != address(0), "Invalid user address");
         require(admins[user], "Not an admin");
         suspendedAdmins[user] = true;
         emit AdminSuspended(user);
     }
 
     function reinstateAdmin(address user) external onlySecurityCouncil {
+        require(user != address(0), "Invalid user address");
         suspendedAdmins[user] = false;
         emit AdminReinstated(user);
     }
