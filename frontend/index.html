@@ -39,9 +39,11 @@
     />
 
     <!-- Theme colour for mobile browsers -->
-    <meta name="theme-color" content="#0a0b14" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f8f9ff" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0a0b14" />
   </head>
   <body>
+    <a href="#main-content" class="skip-to-content" style="position: absolute; left: -9999px; top: auto; width: 1px; height: 1px; overflow: hidden;">Skip to main content</a>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
