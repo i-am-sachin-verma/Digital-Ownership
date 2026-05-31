@@ -75,7 +75,7 @@ const Bluesky = () => (
   </svg>
 )
 
-export default function LandingPage() {
+export default function LandingPage({ onNavigateOwnership }: { onNavigateOwnership: () => void }) {
   const [count, setCount] = useState(0)
   const [theme, setTheme] = useState<'light' | 'dark'>(() =>
     window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
@@ -107,6 +107,18 @@ export default function LandingPage() {
         </div>
 
         <ul className="nav-links">
+          <li>
+            <a
+              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                onNavigateOwnership();
+              }}
+              style={{ fontWeight: 600, color: "var(--accent-light)" }}
+            >
+              Ownership Records
+            </a>
+          </li>
           <li><a href="#">Docs</a></li>
           <li><a href="#">Guide</a></li>
           <li><a href="#">Contracts</a></li>
@@ -134,84 +146,154 @@ export default function LandingPage() {
       </nav>
 
       {/* Hero */}
-      <section className="hero-section">
-        <div className="hero-img-wrap">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React" />
-          <img src={viteLogo} className="vite-logo" alt="Vite" />
+      <section className="hero-section animate-fade-up bg-grid" style={{ padding: '80px 24px', position: 'relative', overflow: 'hidden' }}>
+        <div className="radial-glow" style={{ position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)', width: '800px', height: '400px', zIndex: 0 }} />
+        
+        <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <span className="badge badge-accent mb-4 animate-pulse-glow" style={{ fontSize: '0.85rem', padding: '6px 16px' }}>
+            ⚡ Digital Ownership Protocol v1.0.0
+          </span>
+          <h1 className="hero-title gradient-text font-bold text-center" style={{ fontSize: 'clamp(2.3rem, 6vw, 3.8rem)', lineHeight: 1.1, maxWidth: '900px', margin: '0 auto var(--space-4)' }}>
+            Sovereign Digital Identity & Asset Verification
+          </h1>
+          <p className="hero-sub text-center mt-4" style={{ fontSize: '1.15rem', maxWidth: '650px', color: 'var(--text-secondary)', marginInline: 'auto' }}>
+            A decentralized proof-of-ownership system to register, verify, audit, and securely export your digital asset portfolios on-chain.
+          </p>
+
+          <div className="flex gap-4 mt-8" style={{ justifyContent: 'center' }}>
+            <button
+              onClick={onNavigateOwnership}
+              className="focus-ring hover-lift press"
+              style={{
+                background: 'linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%)',
+                color: 'var(--text-inverse)',
+                border: 'none',
+                borderRadius: 'var(--radius-lg)',
+                padding: '14px 28px',
+                fontWeight: 700,
+                fontSize: '1rem',
+                boxShadow: 'var(--shadow-accent)',
+                cursor: 'pointer',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '10px'
+              }}
+            >
+              <Bolt /> Enter Export Workspace
+            </button>
+            <a
+              href="https://github.com/tejask011/Digital-Ownership"
+              target="_blank"
+              rel="noreferrer"
+              className="focus-ring hover-lift press"
+              style={{
+                background: 'var(--bg-elevated)',
+                color: 'var(--text-primary)',
+                border: '1px solid var(--border-strong)',
+                borderRadius: 'var(--radius-lg)',
+                padding: '14px 28px',
+                fontWeight: 600,
+                fontSize: '1rem',
+                cursor: 'pointer',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '10px'
+              }}
+            >
+              <Github /> View Contracts Github
+            </a>
+          </div>
+
+          {/* Quick Metrics Grid */}
+          <div className="grid-3 mt-12 w-full" style={{ maxWidth: '900px', width: '100%', gap: 'var(--space-4)' }}>
+            <div className="glass p-4 text-center" style={{ borderRadius: 'var(--radius-md)', border: '1px solid var(--border)' }}>
+              <h4 style={{ color: 'var(--accent2)', fontSize: '1.5rem', fontWeight: 700 }}>100%</h4>
+              <p style={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.1em' }} className="text-muted">On-Chain Custody</p>
+            </div>
+            <div className="glass p-4 text-center" style={{ borderRadius: 'var(--radius-md)', border: '1px solid var(--border)' }}>
+              <h4 style={{ color: 'var(--success)', fontSize: '1.5rem', fontWeight: 700 }}>&lt; 1.2s</h4>
+              <p style={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.1em' }} className="text-muted">Verification Sync</p>
+            </div>
+            <div className="glass p-4 text-center" style={{ borderRadius: 'var(--radius-md)', border: '1px solid var(--border)' }}>
+              <h4 style={{ color: 'var(--warning)', fontSize: '1.5rem', fontWeight: 700 }}>Zero</h4>
+              <p style={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.1em' }} className="text-muted">Database Reliance</p>
+            </div>
+          </div>
         </div>
-        <h1 className="hero-title">Get started</h1>
-        <p className="hero-sub">
-          Lightning fast frontend tooling for the next generation web.
-        </p>
-        <p className="hero-edit">
-          Edit <code>src/App.jsx</code> and save to test
-          <span className="hmr-badge">HMR</span>
-          <span className="hmr-check">&#10003;</span>
-        </p>
-        <button className="counter-btn" onClick={() => setCount(c => c + 1)}>
-          <Bolt /> Count is {count}
-        </button>
       </section>
 
-      <div className="ticks" />
+      <div className="divider divider-glow" style={{ margin: 0 }} />
 
       {/* Cards */}
-      <section className="cards-section">
-        <div className="card">
-          <div className="card-icon"><BookIcon /></div>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul className="link-list">
-            <li>
-              <a className="link-btn" href="https://vite.dev/" target="_blank" rel="noreferrer">
-                <img src={viteLogo} alt="" width="16" height="16" />
-                Explore Vite <span className="arrow">&#8250;</span>
-              </a>
-            </li>
-            <li>
-              <a className="link-btn" href="https://react.dev/" target="_blank" rel="noreferrer">
-                <img src={reactLogo} alt="" width="16" height="16" />
-                Learn more <span className="arrow">&#8250;</span>
-              </a>
-            </li>
-          </ul>
-        </div>
+      <section className="cards-section container" style={{ paddingBlock: '60px' }}>
+        <h2 className="text-center gradient-text font-bold mb-8 animate-fade-in" style={{ fontSize: '2rem', textAlign: 'center', marginBottom: '40px' }}>
+          Explore Platform Functions
+        </h2>
+        
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 'var(--space-6)' }}>
+          {/* Card 1: Exporter */}
+          <div className="glass-card p-6 flex flex-col justify-between" style={{ cursor: 'pointer', borderColor: 'var(--border-accent)' }} onClick={onNavigateOwnership}>
+            <div>
+              <div className="card-icon" style={{ color: 'var(--accent2)', marginBottom: '16px' }}>
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                  <polyline points="14 2 14 8 20 8"></polyline>
+                  <line x1="16" y1="13" x2="8" y2="13"></line>
+                  <line x1="16" y1="17" x2="8" y2="17"></line>
+                  <line x1="10" y1="9" x2="8" y2="9"></line>
+                </svg>
+              </div>
+              <h3 className="gradient-text font-bold" style={{ fontSize: '1.25rem', margin: 0 }}>Export Ownership Records</h3>
+              <p className="text-secondary text-sm mt-2">
+                Verify asset status, analyze creator records, and export official data grids directly to CSV, Excel, or high-fidelity signed PDFs.
+              </p>
+            </div>
+            <div className="mt-4 flex items-center justify-between" style={{ marginTop: '20px' }}>
+              <span className="badge badge-success">Workspace Active</span>
+              <span style={{ fontSize: '0.85rem', color: 'var(--accent-light)', fontWeight: 600 }}>Launch Hub &rarr;</span>
+            </div>
+          </div>
 
-        <div className="card">
-          <div className="card-map" aria-hidden="true" />
-          <div className="card-icon"><PeopleIcon /></div>
-          <h2>Connect with us</h2>
-          <p>Join the community</p>
-          <ul className="link-list">
-            <li>
-              <a className="link-btn" href="https://github.com/vitejs/vite" target="_blank" rel="noreferrer">
-                <Github /> GitHub
-              </a>
-            </li>
-            <li>
-              <a className="link-btn" href="https://chat.vite.dev/" target="_blank" rel="noreferrer">
-                <Discord /> Discord
-              </a>
-            </li>
-            <li>
-              <a className="link-btn" href="https://x.com/vite_js" target="_blank" rel="noreferrer">
-                <XIcon /> X.com
-              </a>
-            </li>
-            <li>
-              <a className="link-btn" href="https://bsky.app/profile/vite.dev" target="_blank" rel="noreferrer">
-                <Bluesky /> Bluesky
-              </a>
-            </li>
-          </ul>
+          {/* Card 2: Identity Profile */}
+          <div className="glass-card p-6 flex flex-col justify-between">
+            <div>
+              <div className="card-icon" style={{ color: 'var(--accent)', marginBottom: '16px' }}>
+                <PeopleIcon />
+              </div>
+              <h3 className="gradient-text font-bold" style={{ fontSize: '1.25rem', margin: 0 }}>Sovereign Identity Profiles</h3>
+              <p className="text-secondary text-sm mt-2">
+                Establish attestation scores, connect Web3 namespaces like ENS, and authorize decentralized claims completely cryptographically.
+              </p>
+            </div>
+            <div className="mt-4 flex items-center justify-between" style={{ marginTop: '20px' }}>
+              <span className="badge badge-accent">Attestation Layer</span>
+              <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Docs Only</span>
+            </div>
+          </div>
+
+          {/* Card 3: Smart Audit */}
+          <div className="glass-card p-6 flex flex-col justify-between">
+            <div>
+              <div className="card-icon" style={{ color: 'var(--warning)', marginBottom: '16px' }}>
+                <BookIcon />
+              </div>
+              <h3 className="gradient-text font-bold" style={{ fontSize: '1.25rem', margin: 0 }}>Secured Smart Auditing</h3>
+              <p className="text-secondary text-sm mt-2">
+                Evaluate upgradeable admin paths, monitor ownership transitions, and track gas metrics directly on our analytics dashboard.
+              </p>
+            </div>
+            <div className="mt-4 flex items-center justify-between" style={{ marginTop: '20px' }}>
+              <span className="badge badge-warning">Audit active</span>
+              <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>Docs Only</span>
+            </div>
+          </div>
         </div>
       </section>
 
-      <div className="ticks" />
+      <div className="divider divider-glow" style={{ margin: 0 }} />
 
-      <footer className="footer">
-        Made with <span className="heart"><Heart /></span> by the community
+      <footer className="footer" style={{ padding: '30px', textAlign: 'center', fontSize: '0.9rem', color: 'var(--text-muted)', backgroundColor: 'var(--bg-surface)' }}>
+        Made with <span className="heart" style={{ color: 'var(--danger)' }}><Heart /></span> by the Sovereign Digital Ownership Community
       </footer>
     </>
   )
