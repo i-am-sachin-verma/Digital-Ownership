@@ -17,9 +17,19 @@ contract AccessController {
     event AdminReinstated(address indexed user);
     event AdminRemoved(address indexed user);
 
+    // Custom Errors
+    error InvalidAddress();
+    error NotAdmin();
+    error AdminSuspendedError();
+    error NotSecurityCouncil();
+    error AlreadyAdmin();
+    error CannotRemoveSelf();
+    error KeepAtLeastOneAdmin();
+    error IdentityRequired();
+
     constructor(address registryAddress, address _securityCouncil) {
-        require(registryAddress != address(0), "Invalid registry address");
-        require(_securityCouncil != address(0), "Invalid security council");
+        if (registryAddress == address(0)) revert InvalidAddress();
+        if (_securityCouncil == address(0)) revert InvalidAddress();
         
         identityRegistry = SovereignIdentityRegistry(registryAddress);
         securityCouncil = _securityCouncil;
@@ -28,46 +38,46 @@ contract AccessController {
     }
 
     modifier onlyAdmin() {
-        require(admins[msg.sender], "Not admin");
-        require(!suspendedAdmins[msg.sender], "Admin suspended");
+        if (!admins[msg.sender]) revert NotAdmin();
+        if (suspendedAdmins[msg.sender]) revert AdminSuspendedError();
         _;
     }
 
     modifier onlySecurityCouncil() {
-        require(msg.sender == securityCouncil, "Not security council");
+        if (msg.sender != securityCouncil) revert NotSecurityCouncil();
         _;
     }
 
     function suspendAdmin(address user) external onlySecurityCouncil {
-        require(user != address(0), "Invalid user address");
-        require(admins[user], "Not an admin");
+        if (user == address(0)) revert InvalidAddress();
+        if (!admins[user]) revert NotAdmin();
         suspendedAdmins[user] = true;
         emit AdminSuspended(user);
     }
 
     function reinstateAdmin(address user) external onlySecurityCouncil {
-        require(user != address(0), "Invalid user address");
+        if (user == address(0)) revert InvalidAddress();
         suspendedAdmins[user] = false;
         emit AdminReinstated(user);
     }
 
     modifier onlyVerifiedUser() {
-        require(identityRegistry.isRegistered(msg.sender), "Identity required");
+        if (!identityRegistry.isRegistered(msg.sender)) revert IdentityRequired();
         _;
     }
 
     function addAdmin(address user) external onlyAdmin {
-        require(user != address(0), "Invalid user address");
-        require(!admins[user], "Already an admin");
+        if (user == address(0)) revert InvalidAddress();
+        if (admins[user]) revert AlreadyAdmin();
         admins[user] = true;
         adminCount++;
         emit AdminAdded(user);
     }
 
     function removeAdmin(address user) external onlyAdmin {
-        require(admins[user], "Not an admin");
-        require(user != msg.sender, "Cannot remove self");
-        require(adminCount > 1, "Must have at least one admin");
+        if (!admins[user]) revert NotAdmin();
+        if (user == msg.sender) revert CannotRemoveSelf();
+        if (adminCount <= 1) revert KeepAtLeastOneAdmin();
 
         admins[user] = false;
         adminCount--;
@@ -75,7 +85,7 @@ contract AccessController {
     }
 
     function isAdmin(address user) external view returns (bool) {
-        require(user != address(0), "Invalid user address");
+        if (user == address(0)) revert InvalidAddress();
         return admins[user];
     }
 }
