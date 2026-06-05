@@ -181,6 +181,7 @@ body {
   background-color: var(--bg-base);
   transition:
     background-color var(--transition-base),
+    border-color var(--transition-base),
     color var(--transition-base);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -314,9 +315,11 @@ input::placeholder, textarea::placeholder {
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-md);
   transition:
+    background var(--transition-base),
     box-shadow var(--transition-base),
     border-color var(--transition-base),
-    transform var(--transition-fast);
+    transform var(--transition-fast),
+    color var(--transition-base);
 }
 .glass-card:hover {
   box-shadow: var(--shadow-accent);
