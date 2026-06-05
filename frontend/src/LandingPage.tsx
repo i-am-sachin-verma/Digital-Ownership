@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
 import heroImg from './assets/hero.png'
+import WalletConnectButton from './components/WalletConnectButton'
+import AttestationFeed from './components/AttestationFeed'
 
 const Sun = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -223,6 +225,22 @@ export default function LandingPage({ onNavigateOwnership }: { onNavigateOwnersh
       </section>
 
       <div className="divider divider-glow" style={{ margin: 0 }} />
+
+      {/* Main Attestation & Wallet Section */}
+      <main id="main-content" className="container mt-8 animate-fade-up">
+        <div className="grid-2">
+          <div className="glass-card p-6 flex flex-col gap-4">
+            <h2 className="text-xl font-bold">Identity Portal</h2>
+            <p className="text-sm text-secondary">Manage and configure your Web3 credentials, access levels, and security details.</p>
+            <WalletConnectButton title="Sovereign Identity Session" />
+          </div>
+          <div className="glass-card p-6 flex flex-col gap-4">
+            <AttestationFeed title="Verification Feed" />
+          </div>
+        </div>
+      </main>
+
+      <div className="ticks" />
 
       {/* Cards */}
       <section className="cards-section container" style={{ paddingBlock: '60px' }}>
