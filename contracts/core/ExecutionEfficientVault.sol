@@ -21,7 +21,8 @@ contract ExecutionEfficientVault {
             balances[msg.sender] = bal - amount;
         }
 
-        payable(msg.sender).transfer(amount);
+        (bool success, ) = payable(msg.sender).call{value: amount}("");
+        require(success, "Transfer failed");
 
         emit Withdrawn(msg.sender, amount);
     }
