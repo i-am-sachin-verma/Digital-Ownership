@@ -43,6 +43,22 @@
   </head>
   <body>
     <div id="root"></div>
+    <div id="error-boundary-fallback" style="display:none; padding: 24px; color: #ef4444; font-family: 'JetBrains Mono', monospace; background: #1e1b1b; border: 2px solid #ef4444; margin: 24px; border-radius: 12px; z-index: 99999; position: relative; max-width: 800px; margin-inline: auto; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+      <h3 style="margin-top: 0; color: #f87171;">⚠️ Client-side Runtime Error</h3>
+      <p style="color: #9499b5; font-size: 0.9rem; margin-bottom: 12px;">The application crashed during initialization. Details below:</p>
+      <pre id="error-message" style="background: #110f0f; padding: 16px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); overflow-x: auto; font-size: 0.85rem; color: #fca5a5; white-space: pre-wrap;"></pre>
+      <button onclick="window.location.reload()" style="margin-top: 14px; background: #ef4444; color: white; border: none; padding: 8px 16px; border-radius: 6px; font-weight: 600; cursor: pointer;">Reload Application</button>
+    </div>
+    <script>
+      window.addEventListener('error', function(event) {
+        document.getElementById('error-boundary-fallback').style.display = 'block';
+        document.getElementById('error-message').textContent += event.message + '\nat ' + event.filename + ':' + event.lineno + ':' + event.colno + '\n\n';
+      });
+      window.addEventListener('unhandledrejection', function(event) {
+        document.getElementById('error-boundary-fallback').style.display = 'block';
+        document.getElementById('error-message').textContent += 'Unhandled Promise Rejection:\n' + (event.reason ? (event.reason.stack || event.reason) : 'Unknown reason') + '\n\n';
+      });
+    </script>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
