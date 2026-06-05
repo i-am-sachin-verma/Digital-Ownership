@@ -17,6 +17,26 @@ contract TrustScoreEngine is TrustScoreLogic {
     // Anti-collusion contract (plug-in)
     address public antiCollusionContract;
 
+    // Owner for access control
+    address public owner;
+
+    constructor() {
+        owner = msg.sender;
+    }
+
+    modifier onlyOwner() {
+        require(msg.sender == owner, "Only owner can call this function");
+        _;
+    }
+
+    modifier onlyAuthorized() {
+        require(
+            msg.sender == owner || msg.sender == antiCollusionContract,
+            "Only authorized callers can execute this function"
+        );
+        _;
+    }
+
     /**
      * Set external anti-collusion contract
      */
@@ -48,9 +68,11 @@ contract TrustScoreEngine is TrustScoreLogic {
     }
 
     /**
-     * Apply manual penalty (from anti-collusion or admin)
+     * Apply manual penalty (restricted to authorized callers)
+     * Prevents arbitrary penalty inflation by unauthorized addresses
      */
-    function applyPenalty(uint256 tokenId, uint256 penalty) external {
+    function applyPenalty(uint256 tokenId, uint256 penalty) external onlyAuthorized {
+        require(penalty > 0, "Penalty must be greater than zero");
         penaltyScore[tokenId] += penalty;
     }
 
