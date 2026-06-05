@@ -2,8 +2,9 @@
 pragma solidity ^0.8.20;
 
 import "./SovereignIdentityRegistry.sol";
+import "@openzeppelin/contracts/proxy/utils/Initializable.sol";
 
-contract AccessController {
+contract AccessController is Initializable {
 
     SovereignIdentityRegistry public immutable identityRegistry;
     address public securityCouncil;
@@ -17,14 +18,19 @@ contract AccessController {
     event AdminReinstated(address indexed user);
     event AdminRemoved(address indexed user);
 
-    constructor(address registryAddress, address _securityCouncil) {
+    constructor(address registryAddress) {
         require(registryAddress != address(0), "Invalid registry address");
-        require(_securityCouncil != address(0), "Invalid security council");
-        
         identityRegistry = SovereignIdentityRegistry(registryAddress);
+    }
+
+    function initialize(address _securityCouncil, address _admin) public initializer {
+        require(_securityCouncil != address(0), "Invalid security council");
+        require(_admin != address(0), "Invalid admin address");
+        
         securityCouncil = _securityCouncil;
-        admins[msg.sender] = true;
+        admins[_admin] = true;
         adminCount = 1;
+        emit AdminAdded(_admin);
     }
 
     modifier onlyAdmin() {
