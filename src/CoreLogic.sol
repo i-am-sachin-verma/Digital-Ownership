@@ -9,8 +9,8 @@ contract CoreLogic is AccessController {
 
     event DataUpdated(uint256 indexed id, string indexed value);
 
-    constructor(address registryAddress, address securityCouncil) 
-        AccessController(registryAddress, securityCouncil) 
+    constructor(address registryAddress) 
+        AccessController(registryAddress) 
     {}
 
     function setData(uint256 id, string calldata value) 

@@ -16,6 +16,7 @@ contract ProxyTest is Test {
 
     address public admin = address(0x1);
     address public user = address(0x2);
+    address public securityCouncil = address(0x3);
 
     function setUp() public {
         registry = new SovereignIdentityRegistry();
@@ -24,6 +25,9 @@ contract ProxyTest is Test {
         // Deploy Proxy pointing to CoreLogic
         proxy = new MinimalProxy(address(logic));
         proxyAsLogic = CoreLogic(address(proxy));
+        
+        // Initialize the proxy storage
+        proxyAsLogic.initialize(securityCouncil, admin);
     }
 
     function test_Proxy_Delegation() public {
