@@ -42,6 +42,8 @@ contract CrowdfundingPlatform {
     // ============================================================
 
     function createCampaign(uint256 goal, uint256 duration) external {
+        require(goal > 0, "Campaign goal must be greater than zero");
+        require(duration > 0, "Campaign duration must be greater than zero");
         campaignCount++;
 
         campaigns[campaignCount] = Campaign({
