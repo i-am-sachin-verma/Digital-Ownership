@@ -574,14 +574,47 @@ contract AdvancedIdentityRegistry is ERC721, AccessControl {
             batchSize
         );
 
-
-
         if (from != address(0)) {
-
             require(
                 !identities[tokenId].frozen,
                 "Frozen identity"
             );
+
+            // Clear the previous owner's recovery wallet
+            delete recoveryWallet[tokenId];
+
+            // Clear the previous owner's walletToToken mapping
+            walletToToken[from] = 0;
+
+            if (to != address(0)) {
+                // Standard transfer (selling or sending)
+                require(
+                    walletToToken[to] == 0 || walletToToken[to] == tokenId,
+                    "Recipient already owns identity"
+                );
+                require(
+                    !bannedWallets[to],
+                    "Recipient wallet banned"
+                );
+
+                walletToToken[to] = tokenId;
+                identities[tokenId].owner = to;
+            } else {
+                // Burn
+                delete identities[tokenId];
+            }
+        } else {
+            // Minting
+            if (to != address(0)) {
+                require(
+                    walletToToken[to] == 0,
+                    "Recipient already owns identity"
+                );
+                require(
+                    !bannedWallets[to],
+                    "Recipient wallet banned"
+                );
+            }
         }
     }
 }
