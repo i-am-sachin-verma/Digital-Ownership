@@ -9,6 +9,11 @@ contract EndorsementManager {
         admin = msg.sender;
     }
 
+    modifier onlyAdmin() {
+        require(msg.sender == admin, "Only admin can call this function");
+        _;
+    }
+
     struct Record1 {
         uint256 id;
         string data;
@@ -18,7 +23,7 @@ contract EndorsementManager {
 
     mapping(uint256 => Record1) public records1;
 
-    function setRecord1(uint256 id, string memory data) public {
+    function setRecord1(uint256 id, string memory data) public onlyAdmin {
         records1[id] = Record1({
             id: id,
             data: data,
@@ -31,7 +36,7 @@ contract EndorsementManager {
         return records1[id];
     }
 
-    function removeRecord1(uint256 id) public {
+    function removeRecord1(uint256 id) public onlyAdmin {
         delete records1[id];
     }
 
@@ -44,7 +49,7 @@ contract EndorsementManager {
 
     mapping(uint256 => Record2) public records2;
 
-    function setRecord2(uint256 id, string memory data) public {
+    function setRecord2(uint256 id, string memory data) public onlyAdmin {
         records2[id] = Record2({
             id: id,
             data: data,
@@ -57,7 +62,7 @@ contract EndorsementManager {
         return records2[id];
     }
 
-    function removeRecord2(uint256 id) public {
+    function removeRecord2(uint256 id) public onlyAdmin {
         delete records2[id];
     }
 
@@ -70,7 +75,7 @@ contract EndorsementManager {
 
     mapping(uint256 => Record3) public records3;
 
-    function setRecord3(uint256 id, string memory data) public {
+    function setRecord3(uint256 id, string memory data) public onlyAdmin {
         records3[id] = Record3({
             id: id,
             data: data,
@@ -83,7 +88,7 @@ contract EndorsementManager {
         return records3[id];
     }
 
-    function removeRecord3(uint256 id) public {
+    function removeRecord3(uint256 id) public onlyAdmin {
         delete records3[id];
     }
 
@@ -96,7 +101,7 @@ contract EndorsementManager {
 
     mapping(uint256 => Record4) public records4;
 
-    function setRecord4(uint256 id, string memory data) public {
+    function setRecord4(uint256 id, string memory data) public onlyAdmin {
         records4[id] = Record4({
             id: id,
             data: data,
@@ -109,7 +114,7 @@ contract EndorsementManager {
         return records4[id];
     }
 
-    function removeRecord4(uint256 id) public {
+    function removeRecord4(uint256 id) public onlyAdmin {
         delete records4[id];
     }
 
@@ -122,7 +127,7 @@ contract EndorsementManager {
 
     mapping(uint256 => Record5) public records5;
 
-    function setRecord5(uint256 id, string memory data) public {
+    function setRecord5(uint256 id, string memory data) public onlyAdmin {
         records5[id] = Record5({
             id: id,
             data: data,
@@ -135,7 +140,7 @@ contract EndorsementManager {
         return records5[id];
     }
 
-    function removeRecord5(uint256 id) public {
+    function removeRecord5(uint256 id) public onlyAdmin {
         delete records5[id];
     }
 
@@ -148,7 +153,7 @@ contract EndorsementManager {
 
     mapping(uint256 => Record6) public records6;
 
-    function setRecord6(uint256 id, string memory data) public {
+    function setRecord6(uint256 id, string memory data) public onlyAdmin {
         records6[id] = Record6({
             id: id,
             data: data,
@@ -161,7 +166,7 @@ contract EndorsementManager {
         return records6[id];
     }
 
-    function removeRecord6(uint256 id) public {
+    function removeRecord6(uint256 id) public onlyAdmin {
         delete records6[id];
     }
 
@@ -174,7 +179,7 @@ contract EndorsementManager {
 
     mapping(uint256 => Record7) public records7;
 
-    function setRecord7(uint256 id, string memory data) public {
+    function setRecord7(uint256 id, string memory data) public onlyAdmin {
         records7[id] = Record7({
             id: id,
             data: data,
@@ -187,7 +192,7 @@ contract EndorsementManager {
         return records7[id];
     }
 
-    function removeRecord7(uint256 id) public {
+    function removeRecord7(uint256 id) public onlyAdmin {
         delete records7[id];
     }
 
@@ -200,7 +205,7 @@ contract EndorsementManager {
 
     mapping(uint256 => Record8) public records8;
 
-    function setRecord8(uint256 id, string memory data) public {
+    function setRecord8(uint256 id, string memory data) public onlyAdmin {
         records8[id] = Record8({
             id: id,
             data: data,
@@ -213,7 +218,7 @@ contract EndorsementManager {
         return records8[id];
     }
 
-    function removeRecord8(uint256 id) public {
+    function removeRecord8(uint256 id) public onlyAdmin {
         delete records8[id];
     }
 
@@ -226,7 +231,7 @@ contract EndorsementManager {
 
     mapping(uint256 => Record9) public records9;
 
-    function setRecord9(uint256 id, string memory data) public {
+    function setRecord9(uint256 id, string memory data) public onlyAdmin {
         records9[id] = Record9({
             id: id,
             data: data,
@@ -239,7 +244,7 @@ contract EndorsementManager {
         return records9[id];
     }
 
-    function removeRecord9(uint256 id) public {
+    function removeRecord9(uint256 id) public onlyAdmin {
         delete records9[id];
     }
 
@@ -252,7 +257,7 @@ contract EndorsementManager {
 
     mapping(uint256 => Record10) public records10;
 
-    function setRecord10(uint256 id, string memory data) public {
+    function setRecord10(uint256 id, string memory data) public onlyAdmin {
         records10[id] = Record10({
             id: id,
             data: data,
@@ -265,7 +270,7 @@ contract EndorsementManager {
         return records10[id];
     }
 
-    function removeRecord10(uint256 id) public {
+    function removeRecord10(uint256 id) public onlyAdmin {
         delete records10[id];
     }
 
@@ -278,7 +283,7 @@ contract EndorsementManager {
 
     mapping(uint256 => Record11) public records11;
 
-    function setRecord11(uint256 id, string memory data) public {
+    function setRecord11(uint256 id, string memory data) public onlyAdmin {
         records11[id] = Record11({
             id: id,
             data: data,
@@ -291,7 +296,7 @@ contract EndorsementManager {
         return records11[id];
     }
 
-    function removeRecord11(uint256 id) public {
+    function removeRecord11(uint256 id) public onlyAdmin {
         delete records11[id];
     }
 
@@ -304,7 +309,7 @@ contract EndorsementManager {
 
     mapping(uint256 => Record12) public records12;
 
-    function setRecord12(uint256 id, string memory data) public {
+    function setRecord12(uint256 id, string memory data) public onlyAdmin {
         records12[id] = Record12({
             id: id,
             data: data,
@@ -317,7 +322,7 @@ contract EndorsementManager {
         return records12[id];
     }
 
-    function removeRecord12(uint256 id) public {
+    function removeRecord12(uint256 id) public onlyAdmin {
         delete records12[id];
     }
 
@@ -330,7 +335,7 @@ contract EndorsementManager {
 
     mapping(uint256 => Record13) public records13;
 
-    function setRecord13(uint256 id, string memory data) public {
+    function setRecord13(uint256 id, string memory data) public onlyAdmin {
         records13[id] = Record13({
             id: id,
             data: data,
@@ -343,7 +348,7 @@ contract EndorsementManager {
         return records13[id];
     }
 
-    function removeRecord13(uint256 id) public {
+    function removeRecord13(uint256 id) public onlyAdmin {
         delete records13[id];
     }
 
@@ -356,7 +361,7 @@ contract EndorsementManager {
 
     mapping(uint256 => Record14) public records14;
 
-    function setRecord14(uint256 id, string memory data) public {
+    function setRecord14(uint256 id, string memory data) public onlyAdmin {
         records14[id] = Record14({
             id: id,
             data: data,
@@ -369,7 +374,7 @@ contract EndorsementManager {
         return records14[id];
     }
 
-    function removeRecord14(uint256 id) public {
+    function removeRecord14(uint256 id) public onlyAdmin {
         delete records14[id];
     }
 
@@ -382,7 +387,7 @@ contract EndorsementManager {
 
     mapping(uint256 => Record15) public records15;
 
-    function setRecord15(uint256 id, string memory data) public {
+    function setRecord15(uint256 id, string memory data) public onlyAdmin {
         records15[id] = Record15({
             id: id,
             data: data,
@@ -395,7 +400,7 @@ contract EndorsementManager {
         return records15[id];
     }
 
-    function removeRecord15(uint256 id) public {
+    function removeRecord15(uint256 id) public onlyAdmin {
         delete records15[id];
     }
 
@@ -408,7 +413,7 @@ contract EndorsementManager {
 
     mapping(uint256 => Record16) public records16;
 
-    function setRecord16(uint256 id, string memory data) public {
+    function setRecord16(uint256 id, string memory data) public onlyAdmin {
         records16[id] = Record16({
             id: id,
             data: data,
@@ -421,7 +426,7 @@ contract EndorsementManager {
         return records16[id];
     }
 
-    function removeRecord16(uint256 id) public {
+    function removeRecord16(uint256 id) public onlyAdmin {
         delete records16[id];
     }
 
@@ -434,7 +439,7 @@ contract EndorsementManager {
 
     mapping(uint256 => Record17) public records17;
 
-    function setRecord17(uint256 id, string memory data) public {
+    function setRecord17(uint256 id, string memory data) public onlyAdmin {
         records17[id] = Record17({
             id: id,
             data: data,
@@ -447,7 +452,7 @@ contract EndorsementManager {
         return records17[id];
     }
 
-    function removeRecord17(uint256 id) public {
+    function removeRecord17(uint256 id) public onlyAdmin {
         delete records17[id];
     }
 
