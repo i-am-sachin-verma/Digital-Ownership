@@ -1,16 +1,22 @@
-# React + Vite
+# Digital Ownership - Frontend UI
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is the frontend interface for the Digital Ownership sovereign identity platform, connecting users to the underlying CoreLogic and AccessController smart contracts.
 
-Currently, two official plugins are available:
+## Prerequisites
+- Node.js (v18 or higher)
+- npm, yarn, or pnpm
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Environment Setup
+Create a `.env` file in the `frontend` directory and add the following variables. Use the contract addresses generated from your Foundry deployment:
 
-## React Compiler
+VITE_RPC_URL="http://127.0.0.1:8545" # Or your live testnet RPC
+VITE_CORE_LOGIC_ADDRESS="<Deployed_CoreLogic_Address>"
+VITE_ACCESS_CONTROLLER_ADDRESS="<Deployed_AccessController_Address>"
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Installation & Running Locally
+1. Install dependencies:
+`npm install`
+2. Start the development server:
+`npm run dev`
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+The frontend uses these environment variables to establish a connection to the blockchain and interact with the deployed identity contracts.
