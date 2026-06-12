@@ -415,20 +415,14 @@ contract InstitutionalAttestationFramework is AccessControl {
         Credential storage credential =
             credentials[credentialId];
 
-
-
         require(
-            credential.issuer
-                == msg.sender,
+            credential.issuer == msg.sender || 
+            hasRole(ROOT_TRUST_ROLE, msg.sender),
             "Unauthorized"
         );
 
-
-
         credential.status =
             CredentialStatus.REVOKED;
-
-
 
         emit CredentialRevoked(
             credentialId
