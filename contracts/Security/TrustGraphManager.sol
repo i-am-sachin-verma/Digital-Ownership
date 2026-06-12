@@ -431,6 +431,23 @@ contract TrustGraphManager {
         return edges[edgeId].relationType;
     }
 
+    event EdgeWeightUpdated(
+        uint256 indexed edgeId,
+        uint256 oldWeight,
+        uint256 newWeight
+    );
+
+    function updateConnectionWeight(
+        uint256 edgeId,
+        uint256 newWeight
+    ) external {
+        Edge storage edge = edges[edgeId];
+        require(edge.active, "Edge not active");
+        uint256 oldWeight = edge.weight;
+        edge.weight = newWeight;
+        emit EdgeWeightUpdated(edgeId, oldWeight, newWeight);
+    }
+
 
 
     function getEdge(
