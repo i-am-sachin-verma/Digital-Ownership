@@ -75,11 +75,13 @@ contract AccessController {
     }
 
     function removeAdmin(address user) external onlyAdmin {
+        if (user == address(0)) revert InvalidAddress();
         if (!admins[user]) revert NotAdmin();
         if (user == msg.sender) revert CannotRemoveSelf();
         if (adminCount <= 1) revert KeepAtLeastOneAdmin();
 
         admins[user] = false;
+        suspendedAdmins[user] = false;
         adminCount--;
         emit AdminRemoved(user);
     }
