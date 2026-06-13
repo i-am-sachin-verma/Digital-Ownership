@@ -599,4 +599,6 @@ contract VersionedEndorsementManager {
                 <= endorsement.expiry
         );
     }
+
+    uint256[50] private __gap;
 }
