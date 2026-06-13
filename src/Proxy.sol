@@ -12,12 +12,12 @@ contract MinimalProxy {
     bytes32 private constant IMPLEMENTATION_SLOT = 0xc5f16f0fcc639fa48a6947836d9850f5047985239322b6af35363249121544b6;
 
     constructor(address _implementation) {
-        require(_implementation != address(0), "Invalid implementation");
+        if (_implementation == address(0)) revert("Proxy: implementation address cannot be zero");
         uint256 size;
         assembly {
             size := extcodesize(_implementation)
         }
-        require(size > 0, "Implementation must be a contract");
+        if (size == 0) revert("Proxy: implementation must be a contract");
         bytes32 slot = IMPLEMENTATION_SLOT;
         assembly {
             sstore(slot, _implementation)
