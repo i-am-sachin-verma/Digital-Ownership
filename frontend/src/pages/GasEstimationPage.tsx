@@ -1,6 +1,6 @@
 import React,{useState,useMemo,useEffect} from 'react';
 
-const 20GasEstimationPage=()=>{
+const GasEstimationPage=()=>{
 const [loading,setLoading]=useState(false);
 const [search,setSearch]=useState('');
 const [items,setItems]=useState<string[]>([]);
@@ -223,4 +223,4 @@ return (
 </div>
 );
 }
-export default 20GasEstimationPage;
+export default GasEstimationPage;
