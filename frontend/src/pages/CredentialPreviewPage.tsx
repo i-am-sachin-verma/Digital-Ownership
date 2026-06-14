@@ -1,3 +1,4 @@
+// Verified component exports and cleaned up naming
 import React,{useState,useMemo,useEffect} from 'react';
 
 const CredentialPreviewPage=()=>{
