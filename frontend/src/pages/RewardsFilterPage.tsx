@@ -1,6 +1,6 @@
 import React,{useState,useMemo,useEffect} from 'react';
 
-const 17RewardsFilterPage=()=>{
+const RewardsFilterPage=()=>{
 const [loading,setLoading]=useState(false);
 const [search,setSearch]=useState('');
 const [items,setItems]=useState<string[]>([]);
@@ -233,4 +233,4 @@ return (
 </div>
 );
 }
-export default 17RewardsFilterPage;
+export default RewardsFilterPage;
