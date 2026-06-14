@@ -26,18 +26,18 @@ contract Issue35ValidationTest is Test {
     // --- SovereignIdentityRegistry Tests ---
 
     function test_Registry_Fail_ZeroHash() public {
-        vm.expectRevert("Invalid identity hash");
+        vm.expectRevert(SovereignIdentityRegistry.InvalidIdentity.selector);
         registry.registerIdentity(bytes32(0));
     }
 
     function test_Registry_Fail_AlreadyRegistered() public {
         registry.registerIdentity(keccak256("identity1"));
-        vm.expectRevert("User already registered");
+        vm.expectRevert(SovereignIdentityRegistry.AlreadyRegistered.selector);
         registry.registerIdentity(keccak256("identity2"));
     }
 
     function test_Registry_Fail_InvalidAddress() public {
-        vm.expectRevert("Invalid user address");
+        vm.expectRevert(SovereignIdentityRegistry.InvalidIdentity.selector);
         registry.isRegistered(address(0));
     }
 
