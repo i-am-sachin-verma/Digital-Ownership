@@ -9,12 +9,12 @@ if (typeof window !== 'undefined') {
 
 import { WalletProvider } from './context/WalletContext'
 import './index.css'
-import App from './App.jsx'
+import App from './App.jsx'\nimport { ErrorBoundary } from './components/ErrorBoundary'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <WalletProvider>
-      <App />
+      <ErrorBoundary><App /></ErrorBoundary>
     </WalletProvider>
   </StrictMode>,
 )
