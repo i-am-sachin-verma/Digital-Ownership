@@ -1,6 +1,6 @@
 import React,{useState,useMemo,useEffect} from 'react';
 
-const 10IdentityVerificationPage=()=>{
+const IdentityVerificationPage=()=>{
 const [loading,setLoading]=useState(false);
 const [search,setSearch]=useState('');
 const [items,setItems]=useState<string[]>([]);
@@ -303,4 +303,4 @@ return (
 </div>
 );
 }
-export default 10IdentityVerificationPage;
+export default IdentityVerificationPage;

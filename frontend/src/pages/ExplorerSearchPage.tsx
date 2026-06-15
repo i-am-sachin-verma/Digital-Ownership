@@ -1,6 +1,6 @@
 import React,{useState,useMemo,useEffect} from 'react';
 
-const 09ExplorerSearchPage=()=>{
+const ExplorerSearchPage=()=>{
 const [loading,setLoading]=useState(false);
 const [search,setSearch]=useState('');
 const [items,setItems]=useState<string[]>([]);
@@ -253,4 +253,4 @@ return (
 </div>
 );
 }
-export default 09ExplorerSearchPage;
+export default ExplorerSearchPage;

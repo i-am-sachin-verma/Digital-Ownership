@@ -1,6 +1,6 @@
 import React,{useState,useMemo,useEffect} from 'react';
 
-const 02DashboardMetricsPage=()=>{
+const DashboardMetricsPage=()=>{
 const [loading,setLoading]=useState(false);
 const [search,setSearch]=useState('');
 const [items,setItems]=useState<string[]>([]);
@@ -313,4 +313,4 @@ return (
 </div>
 );
 }
-export default 02DashboardMetricsPage;
+export default DashboardMetricsPage;

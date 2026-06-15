@@ -1,6 +1,6 @@
 import React,{useState,useMemo,useEffect} from 'react';
 
-const 05PortfolioCachePage=()=>{
+const PortfolioCachePage=()=>{
 const [loading,setLoading]=useState(false);
 const [search,setSearch]=useState('');
 const [items,setItems]=useState<string[]>([]);
@@ -223,4 +223,4 @@ return (
 </div>
 );
 }
-export default 05PortfolioCachePage;
+export default PortfolioCachePage;
