@@ -1,6 +1,6 @@
 import React,{useState,useMemo,useEffect} from 'react';
 
-const 06ENSVerificationPage=()=>{
+const ENSVerificationPage=()=>{
 const [loading,setLoading]=useState(false);
 const [search,setSearch]=useState('');
 const [items,setItems]=useState<string[]>([]);
@@ -323,4 +323,4 @@ return (
 </div>
 );
 }
-export default 06ENSVerificationPage;
+export default ENSVerificationPage;
