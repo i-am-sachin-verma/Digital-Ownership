@@ -168,6 +168,11 @@ interface OwnershipRecordsPageProps {
 
 export default function OwnershipRecordsPage({ onBack }: OwnershipRecordsPageProps) {
   const [search, setSearch] = useState("");
+  const [loading, setLoading] = useState(true);
+  React.useEffect(() => {
+    const t = setTimeout(() => setLoading(false), 800);
+    return () => clearTimeout(t);
+  }, []);
   const [statusFilter, setStatusFilter] = useState("all");
   const [verificationFilter, setVerificationFilter] = useState("all");
   const [sortField, setSortField] = useState<"assetId" | "assetName" | "creationDate" | "transferHistoryCount">("assetId");
@@ -1051,7 +1056,26 @@ export default function OwnershipRecordsPage({ onBack }: OwnershipRecordsPagePro
               </tr>
             </thead>
             <tbody>
-              {filteredRecords.length > 0 ? (
+              {{loading ? (
+                Array.from({ length: 5 }).map((_, idx) => (
+                  <tr key={idx} style={{ borderBottom: "1px solid var(--border)" }}>
+                    <td style={{ padding: "16px 20px" }}>
+                      <div className="flex items-center gap-3">
+                        <div style={{ width: "32px", height: "32px", borderRadius: "var(--radius-sm)", backgroundColor: "var(--border-strong)", animation: "pulse 1.5s infinite ease-in-out" }} />
+                        <div style={{ width: "120px", height: "16px", borderRadius: "4px", backgroundColor: "var(--border-strong)", animation: "pulse 1.5s infinite ease-in-out" }} />
+                      </div>
+                    </td>
+                    <td style={{ padding: "16px 12px" }}><div style={{ width: "60px", height: "14px", borderRadius: "4px", backgroundColor: "var(--border)", animation: "pulse 1.5s infinite ease-in-out" }} /></td>
+                    <td style={{ padding: "16px 12px" }}><div style={{ width: "80px", height: "14px", borderRadius: "4px", backgroundColor: "var(--border)", animation: "pulse 1.5s infinite ease-in-out" }} /></td>
+                    <td style={{ padding: "16px 12px" }}><div style={{ width: "80px", height: "14px", borderRadius: "4px", backgroundColor: "var(--border)", animation: "pulse 1.5s infinite ease-in-out" }} /></td>
+                    <td style={{ padding: "16px 12px" }}><div style={{ width: "70px", height: "18px", borderRadius: "4px", backgroundColor: "var(--border)", animation: "pulse 1.5s infinite ease-in-out" }} /></td>
+                    <td style={{ padding: "16px 12px" }}><div style={{ width: "90px", height: "14px", borderRadius: "4px", backgroundColor: "var(--border)", animation: "pulse 1.5s infinite ease-in-out" }} /></td>
+                    <td style={{ padding: "16px 12px" }}><div style={{ width: "40px", height: "14px", borderRadius: "4px", backgroundColor: "var(--border)", animation: "pulse 1.5s infinite ease-in-out" }} /></td>
+                    <td style={{ padding: "16px 12px" }}><div style={{ width: "80px", height: "18px", borderRadius: "4px", backgroundColor: "var(--border)", animation: "pulse 1.5s infinite ease-in-out" }} /></td>
+                    <td style={{ padding: "16px 20px" }} />
+                  </tr>
+                ))
+              ) : filteredRecords.length > 0 ? (
                 filteredRecords.map((record) => (
                   <tr
                     key={record.assetId}
