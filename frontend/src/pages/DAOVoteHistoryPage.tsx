@@ -1,6 +1,6 @@
 import React,{useState,useMemo,useEffect} from 'react';
 
-const 11DAOVoteHistoryPage=()=>{
+const DAOVoteHistoryPage=()=>{
 const [loading,setLoading]=useState(false);
 const [search,setSearch]=useState('');
 const [items,setItems]=useState<string[]>([]);
@@ -243,4 +243,4 @@ return (
 </div>
 );
 }
-export default 11DAOVoteHistoryPage;
+export default DAOVoteHistoryPage;
