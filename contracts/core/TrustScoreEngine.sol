@@ -17,6 +17,29 @@ contract TrustScoreEngine is TrustScoreLogic {
     // Anti-collusion contract (plug-in)
     address public antiCollusionContract;
 
+    // Owner for access control
+    address public owner;
+
+    // Maximum batch size to prevent DoS via unbounded gas consumption
+    uint256 public constant MAX_BATCH_SIZE = 200;
+
+    constructor() {
+        owner = msg.sender;
+    }
+
+    modifier onlyOwner() {
+        require(msg.sender == owner, "Only owner can call this function");
+        _;
+    }
+
+    modifier onlyAuthorized() {
+        require(
+            msg.sender == owner || msg.sender == antiCollusionContract,
+            "Only authorized callers can execute this function"
+        );
+        _;
+    }
+
     /**
      * Set external anti-collusion contract
      */
@@ -36,9 +59,16 @@ contract TrustScoreEngine is TrustScoreLogic {
     }
 
     /**
-     * Batch update (gas optimized for multiple identities)
+     * Batch update with bounded array length (gas optimized for multiple identities)
+     * Prevents DoS attacks via unbounded calldata array iteration
      */
-    function batchUpdate(uint256[] calldata tokenIds) external {
+    function batchUpdate(uint256[] calldata tokenIds) external onlyAuthorized {
+        require(tokenIds.length > 0, "Empty batch not allowed");
+        require(
+            tokenIds.length <= MAX_BATCH_SIZE,
+            "Batch size exceeds maximum allowed"
+        );
+
         for (uint256 i = 0; i < tokenIds.length; i++) {
             uint256 score = computeScore(tokenIds[i]);
             identities[tokenIds[i]].reputation = score;
