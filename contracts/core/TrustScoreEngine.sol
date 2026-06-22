@@ -17,10 +17,24 @@ contract TrustScoreEngine is TrustScoreLogic {
     // Anti-collusion contract (plug-in)
     address public antiCollusionContract;
 
+    // Owner for access control
+    address public owner;
+
+    constructor() {
+        owner = msg.sender;
+    }
+
+    modifier onlyOwner() {
+        require(msg.sender == owner, "Only owner can call this function");
+        _;
+    }
+
     /**
-     * Set external anti-collusion contract
+     * Set external anti-collusion contract (restricted to owner)
+     * Prevents unauthorized replacement of anti-collusion module
      */
-    function setAntiCollusion(address _contract) external {
+    function setAntiCollusion(address _contract) external onlyOwner {
+        require(_contract != address(0), "Invalid contract address");
         antiCollusionContract = _contract;
     }
 
